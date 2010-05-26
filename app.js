@@ -1,18 +1,13 @@
 GLOBAL.DEBUG = true;
 
-sys = require("sys"),
-path = require('path'),
-mongo = require('./lib/mongoose/mongoose').Mongoose;
-
-// .... got sick of the git submodule madness of express
-// express = require('./lib/express/lib/express');
+var sys = require("sys"),
+    path = require('path'),
+    mongo = require('./lib/mongoose/mongoose').Mongoose,
+    db = mongoose.connect('mongodb://localhost/test'),      
+    Model = mongoose.noSchema('test',db); // collection name
 
 var kiwi = require('kiwi');
 kiwi.require('express');
-
-
-
-
 
 var generate_checksum = function () {
   // Hack for the timebeing
@@ -44,7 +39,7 @@ get('/ip', function(){
 get('/:location/:sublocation', function(){
   var self = this;
   this.contentType('html')
-  return this.param('location') + ' ' + this.param('sublocation')
+  return Model.find() + ' ' + this.param('location') + ' ' + this.param('sublocation')
 
   query(function(error, result) {
     if (error) {
