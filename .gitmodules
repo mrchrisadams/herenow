@@ -1,0 +1,3 @@
+[submodule "lib/node-debug"]
+	path = lib/node-debug
+	url = http://github.com/botanicus/node_debug.git
