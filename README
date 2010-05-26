@@ -1,0 +1,16 @@
+Install like this:
+
+::
+
+    git clone git@github.com:chris-d-adams/HereNow.git
+    cd HereNow
+    git submodule init
+    git submodule update
+    cd lib/mongoose/lib/support/mongodb
+    ln -s ../../../../node-mongodb-native/lib lib
+    cd ../../../../../
+    node app.js
+
+
+You'll need a running MongoDB 1.4.2 instance with a ``test`` database and a
+``foo`` collection with a document with an ``a`` attribute.
