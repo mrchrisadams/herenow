@@ -6,6 +6,7 @@ var sys = require("sys"),
     db = Mongoose.connect('mongodb://localhost/test'); // connect to mongo
     Foo = Mongoose.noSchema('foo',db); // no model, direct access to 'simple' collection.
 
+
 var kiwi = require('kiwi');
 kiwi.require('express');
 
@@ -48,4 +49,5 @@ get('/:location/:sublocation', function(){
       }
   );
 })
+
 run(3000, '0.0.0.0')
