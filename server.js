@@ -17,22 +17,42 @@ var box = {
   sublocation: "Flat 319",
   internal_ip: "192.168.1.75", 
   external_ip: "188.40.40.131",
+  actually_present = ['james'],
   presense: [
-    {username: 'james', checksum: 'sdfasdfadfsasdf'},
-    {username: 'chris', checksum: 'adsadasdasdfrt34'},
+    {
+      username: 'james', 
+      checksum: 'sdfasdfadfsasdf',
+      tags: ['#carbon'],
+      callbacks: [],
+      presence_stats = {},
+    },
+    {
+      username: 'chris', 
+      checksum: 'adsadasdasdfrt34'
+      tags: [],
+      callbacks: [
+          ping_me_when_james_enters, 
+          send_james_this_email_when_james_enters_and_remove_this_callback
+      ],
+      presence_stats = {},
+    },
   ]
 }
 
+callback_api = 'expires, number_of_runs=0'
 var people = [ 
   {
     username: 'james',
     firstname: 'James',
     lastname: 'Gardner',
+    tags : ['#cheese'],
+    mac: [],
   },
   {
     username: 'chris',
     firstname: 'Chris',
     lastname: 'Adams',
+    mac: [],
   },
 ]
 
