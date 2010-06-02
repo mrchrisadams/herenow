@@ -18,14 +18,20 @@ tcpdump.stdout.setEncoding('utf8');
 
 tcpdump.stdout.addListener('data', function(chunk){
   responseCount += 1;
-  sys.puts("=========================================");
-    sys.puts("==============" + responseCount + "")
-  sys.puts("\n");
-  sys.puts("stdout: " + chunk);
-  sys.puts("\n");
-  sys.puts("=========================================");
-  response["stdout-" +responseCount] = chunk;
+  lines = chunk.split('\n');
+
+  for (var i=0, lines; line = lines[i]; i++){
+    // create absurd regexp to match against for each line
+    var mac_address_pattern = /.*([0-9]{2}:[0-9a-z]{2}:[0-9a-z]{2}:[0-9a-z]{2}:[0-9a-z]{2}:[0-9a-z]{2})/;
+    if (line.match(mac_address_pattern)) {
+      sys.puts("[" + i + '] - mac is ' + mac);  
+    }
+    
+  }
+// 
 });
+// TODO - add callback for when we kill this. 
+// It may simplty be that this needs to be the global process instead of the child process to get our text dump.
 
 tcpdump.stdout.addListener('end', function(chunk){
     tpcdumplog = fs.openSync('tcddump.dump', 'w+');
@@ -34,16 +40,16 @@ tcpdump.stdout.addListener('end', function(chunk){
     gotStdoutEOF = true;
 });
 
-// then bad output:
-
-
+// we now list error output too
 tcpdump.stderr.addListener('data', function(chunk){
   errCount += 1;
   sys.puts("stderr: " + chunk);
   response["sterr-" +errCount] = chunk;
 });
 
-tcpdump.stderr.addListener('data', function(chunk){
+tcpdump.stderr.addListener('end', function(chunk){
   sys.puts("stderr: " + chunk);
   gotstderrEOF = true;
 });
+
+
