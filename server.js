@@ -17,7 +17,7 @@ var box = {
   internal_ip: "192.168.1.75", 
   external_ip: "188.40.40.131",
   actually_present: ['james'],
-  presense: [
+  presence: [
     {
       username: 'james', 
       checksum: 'sdfasdfadfsasdf',
@@ -69,8 +69,8 @@ var get_box = function (location, sublocation) {
 }
 var get_people = function(box) {
     p = []
-    for (var i=0; i<box.presense.length; i++) {
-        person = box.presense[i].username
+    for (var i=0; i<box.presence.length; i++) {
+        person = box.presence[i].username
         p.push(people[i])
     }
     return people
