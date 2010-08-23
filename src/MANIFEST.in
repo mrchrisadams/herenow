@@ -1,0 +1,7 @@
+include doc/index.txt
+include doc/source/*.rst
+include test/*
+include example/*
+include ez_setup.py
+include CHANGELOG.txt
+include LICENSE.txt

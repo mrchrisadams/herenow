@@ -1,0 +1,24 @@
+{% extends "/base/main.html" %}
+
+{% block doctitle %}
+<title>Welcome</title>
+{% endblock %}
+
+{% block heading %}
+Welcome!
+{% endblock %}
+
+{% block content %}
+{{ msg }}
+
+Here are the people:
+
+<ul>
+{% for person in person_list %}
+   <li><img src="{{ grav_image(person.macAddress)}}" >{{ person.macAddress }}
+   {% if marble.bag.http.environ['REMOTE_ADDR'] == person.ip %} THIS IS YOU! {% endif %}
+   {{ person.ip }}
+   </li>
+{% endfor %}
+</ul>
+{% endblock %}
