@@ -1,0 +1,27 @@
+Install
++++++++
+
+Install:
+
+::
+
+    wget http://pylonsbook.com/virtualenv.py
+    python2.6 virtualenv.py env
+    . env/bin/activate
+    easy_install pip
+    pip install -r ../../instance/dirac.3aims.com/requirements.txt -f file:///home/james/Desktop/Cur/eggs/ -f file:///home/james/Desktop/Cur/eggs_3rd_party/
+    cd src
+    python setup.py develop
+    cd ../../instance/dirac.3aims.com
+
+Then to run the nmap scan:
+
+::
+
+    python ../../src/herenow/run.py -d pipes.conf nmap 192.168.0.1/24
+
+To start the server:
+
+::
+
+    python ../../src/herenow/run.py -d pipes.conf serve --port 8002 --host 0.0.0.0

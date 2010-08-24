@@ -1,0 +1,15 @@
+# PipeStack
+AppDispatch
+URLConvert
+TornadoPack
+PipeStack
+DreamweaverTemplate
+MongoDBPipe
+HTTPKit
+ErrorReport
+ErrorDocument
+# Third Party
+PyMongo==1.8.1
+Jinja2Pipe
+Jinja2>=2.5,<=2.5.99
+
