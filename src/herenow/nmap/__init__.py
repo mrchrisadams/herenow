@@ -34,6 +34,7 @@ class NmapCmd(Cmd):
 
     def on_run(self, app, args, opts):
         app.start_flow(
+            # AttributeDict is a dictionary that acts like a javascript object, giving us handy dot syntax
             AttributeDict(
                 nmap=AttributeDict(
                     ignore=opts.get('ignore'), 
@@ -44,7 +45,7 @@ class NmapCmd(Cmd):
             ), 
             run=self.run,
         )
-
+        
     @ensure_method_bag('mongo')
     def run(self, bag):
         if bag.nmap.wipe:
@@ -54,6 +55,7 @@ class NmapCmd(Cmd):
         if bag.nmap.ignore:
             cmd.append('--exclude')
             cmd.append(bag.nmap.ignore)
+        # printing these here for debugging?
         print cmd
         process = subprocess.Popen(
             cmd,
@@ -63,23 +65,34 @@ class NmapCmd(Cmd):
         stdout, stderr = process.communicate()
         process.wait()
         ips = {}
+        # this desne parsing code pulls out the IP addresses, line by line from the namp output
         for line in stdout.split('\n'):
             if line.startswith('Host ') and line.endswith(' appears to be up.'):
+              # l is our trimmed line with just the mac address
                 l = line[5:-18]
+                # 
                 if '(' in l and ')' in l:
+                    # okay, totaly lost here, James
                     ip = l[l.find('(')+1:l.find(')')]
+                    # 
                     ips[ip] = l[:l.find('(')-1] 
         cmd = ["cat", "/proc/net/arp"]
+        # again with the sanity checking?
         print cmd
         process = subprocess.Popen(
             cmd,
             shell=False, 
             stdout=subprocess.PIPE
         )
+        # pull relevant output from shell command into corresponding vars  
         stdout, stderr = process.communicate()
+        # calling wait here is a safety check to block until the command finished
         process.wait()
         macs = {}
-        for line in stdout.split('\n'):
+        
+        # it's not clear why we're searching for 0x2 here
+        # sample line here would be super handy
+          for line in stdout.split('\n'):
             if '0x2' in line:
                 cols = []
                 parts = line.split(' ')
@@ -88,14 +101,20 @@ class NmapCmd(Cmd):
                         cols.append(part.strip())
                 macs[cols[0]] = cols[3]
         print macs
+
+        # not sure what final represents here
         final = {}
         for k, v in macs.items():
+            # what's happening here?
             if bag.nmap.ignore and k in bag.nmap.ignore:
                 continue
+                # create new dict to store output in handier
             final[k] = {'mac_address': v}
             if ips.has_key(k):
                 final[k]['host'] = ips[k]
+
         print final
+        # ips_ ?
         ips_ = dict([(v,k) for k,v in macs.items()])
         # Remove the old ones
         for person in bag.mongo.person.find():
