@@ -62,6 +62,9 @@ class NmapCmd(Cmd):
                     mac_address TEXT NOT NULL
                   , ip TEXT NOT NULL
                   , expire TEXT NOT NULL
+                  , name TEXT
+                  , email TEXT
+                  , status TEXT
                 )
                 ''',
                 fetch = False,

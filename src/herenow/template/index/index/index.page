@@ -13,12 +13,49 @@ Welcome!
 
 Here are the people:
 
-<ul>
-{% for person in person_list %}
-   <li><img src="{{ grav_image(person.mac_address)}}" >{{ person.mac_address }}
-   {% if marble.bag.http.environ['REMOTE_ADDR'] == person.ip %} THIS IS YOU! {% endif %}
-   {{ person.ip }}
-   </li>
-{% endfor %}
-</ul>
+<table border="0">
+<tr>
+<td valign="top">
+    {% for person in person_list %}
+        {% if marble.bag.http.environ['REMOTE_ADDR'] == person.ip %}
+            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
+                {% if person.email %}
+                    <img src="{{ grav_image_from_email(person.email)}}" ><br />
+                {% else %}
+                    <img src="{{ grav_image(person.mac_address)}}" ><br />
+                {% endif %}
+                <br />
+                {{ person.mac_address }}<br />
+                {{ person.ip }}
+                {{ form.start_with_layout() }}
+                {{ form.field(label='Name', name='name', type='text') }}
+                {{ form.field(label='Email', name='email', type='text') }}
+                {{ form.field(label='Status', name='status', type='text') }}
+                {{ form.action_bar(form.submit(name='submit')) }}
+                {{ form.end_with_layout() }}
+            </div>
+
+        {% endif %}
+    {% endfor %}
+</td>
+<td valign="top">
+    {% for person in person_list %}
+            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
+                {% if person.email %}
+                    <img src="{{ grav_image_from_email(person.email)}}" ><br />
+                {% else %}
+                    <img src="{{ grav_image(person.mac_address)}}" ><br />
+                {% endif %}
+                <br />
+                {{ person.mac_address }}<br />
+                {{ person.ip }} <br />
+                {% if person.name %}{{ person.name }} <br />{% endif %}
+                {% if person.email %}{{ person.email }} <br />{% endif %}
+                {% if person.status %}{{ person.status }} {% endif %}
+            </div>
+    {% endfor %}
+</td>
+</tr>
+</table>
+
 {% endblock %}
