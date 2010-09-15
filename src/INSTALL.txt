@@ -21,7 +21,7 @@ To set up / wipe the tables (the ``ALL`` doesn't do anything but needs to be the
     python ../../src/herenow/run.py -d pipes.conf nmap --wipe ALL
 
 
-Then to run the nmap scan (update the IP address range for the netowrk you are on ``ipconfig`` is your friend):
+Then to run the nmap scan (update the IP address range for the netowrk you are on ``ifconfig`` is your friend):
 
 ::
 

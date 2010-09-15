@@ -95,6 +95,11 @@ class NmapCmd(Cmd):
         stdout, stderr = process.communicate()
         process.wait()
         macs = {}
+        # Output from cat /proc/net/arp looks like this:
+        # 172.31.24.153    0x1         0x2         00:0e:8e:25:04:ae     *        eth2
+        # The code below parses them. This only works on Linux (with a /proc
+        # filesystem), on other platforms we'll have to run ``arp`` and parse
+        # data differently.
         for line in stdout.split('\n'):
             if '0x2' in line:
                 cols = []
@@ -104,19 +109,11 @@ class NmapCmd(Cmd):
                         cols.append(part.strip())
                 macs[cols[0]] = cols[3]
         print macs
-        final = {}
-        for k, v in macs.items():
-            if bag.nmap.ignore and k in bag.nmap.ignore:
-                continue
-            final[k] = {'mac_address': v}
-            if ips.has_key(k):
-                final[k]['host'] = ips[k]
-        print final
         ips_ = dict([(v,k) for k,v in macs.items()])
         # Remove the old ones
         for person in bag.database.query('select * from person'):
-            if not person.get('expire') or datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
-               and person['mac_address'] not in macs.values():
+            if datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
+               or person['mac_address'] not in macs.values():
                 print "Removing mac %s"%person['mac_address']
                 bag.database.query('delete from person where mac_address = ?', (person['mac_address'],), fetch=False)
         # Now store them in the database
