@@ -35,7 +35,7 @@ class IndexPipe(BaseApp):
     options = dict(
     )
     marble_class = IndexMarble
-    default_aliases = AttributeDict(mongo='mongo')
+    default_aliases = AttributeDict(database='database')
     urls = [
         rule(u'{*}://{*}:{*}/',            add={u'area': u'index', u'action': u'index'}),
     ]

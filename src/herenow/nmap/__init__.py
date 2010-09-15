@@ -45,12 +45,28 @@ class NmapCmd(Cmd):
             ), 
             run=self.run,
         )
-        
-    @ensure_method_bag('mongo')
+
+    @ensure_method_bag('database')
     def run(self, bag):
         if bag.nmap.wipe:
-            print "Wiping the person database..."
-            bag.mongo.person.remove()
+            print "Wiping the person table..."
+            bag.database.query(
+                '''
+                DROP TABLE IF EXISTS person;
+                ''',
+                fetch = False,
+            )
+            print "Creating the person table..."
+            bag.database.query(
+                '''
+                CREATE TABLE person (
+                    mac_address TEXT NOT NULL
+                  , ip TEXT NOT NULL
+                  , expire TEXT NOT NULL
+                )
+                ''',
+                fetch = False,
+            )
         cmd = ["nmap", "-sP", bag.nmap.subnet]
         if bag.nmap.ignore:
             cmd.append('--exclude')
@@ -92,7 +108,8 @@ class NmapCmd(Cmd):
         
         # it's not clear why we're searching for 0x2 here
         # sample line here would be super handy
-          for line in stdout.split('\n'):
+        # x02 denotes a mac address we're interested in
+        for line in stdout.split('\n'):
             if '0x2' in line:
                 cols = []
                 parts = line.split(' ')
@@ -116,26 +133,31 @@ class NmapCmd(Cmd):
         print final
         # ips_ ?
         ips_ = dict([(v,k) for k,v in macs.items()])
-        # Remove the old ones
-        for person in bag.mongo.person.find():
+        # Remove the old ones if they're not present in the latest scan
+        for person in bag.database.query('select * from person'):
             if not person.get('expire') or datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
-               and person['macAddress'] not in macs.values():
-                print "Removing mac %s"%person['macAddress']
-                bag.mongo.person.remove()
+               and person['mac_address'] not in macs.values():
+                print "Removing mac %s"%person['mac_address']
+                bag.database.query('delete from person where mac_address = ?', (person['mac_address'],), fetch=False)
         # Now store them in the database
         for mac in macs.values():
-            if not bag.mongo.person.find({'macAddress': mac}).count():
+            if not bag.database.query('select * from person where mac_address = ?', (mac,)):
                 print "Adding new mac %s"%mac
-                bag.mongo.person.insert({
-                    'macAddress': mac, 
-                    'ip': ips_[mac], 
-                    'expire': (datetime.datetime.now()+datetime.timedelta(seconds=bag.nmap.expire)).strftime('%Y-%m-%d %H:%M')
-                })
+                bag.database.insert_record(
+                    'person',
+                    {
+                        'mac_address': mac, 
+                        'ip': ips_[mac], 
+                        'expire': (datetime.datetime.now()+datetime.timedelta(seconds=bag.nmap.expire)).strftime('%Y-%m-%d %H:%M')
+                    }
+                )
             else:
-                person = bag.mongo.person.find_one({'macAddress': mac})
-                person['expire'] = (datetime.datetime.now()+datetime.timedelta(seconds=bag.nmap.expire)).strftime('%Y-%m-%d %H:%M:%s')
-                bag.mongo.person.save(person)
+                person = bag.database.query(
+                    'update person set expire = ? where mac_address = ?',
+                    (
+                         (datetime.datetime.now()+datetime.timedelta(seconds=bag.nmap.expire)).strftime('%Y-%m-%d %H:%M:%s'),
+                         mac, 
+                    )
+                )
  
-           
-
 
