@@ -63,6 +63,9 @@ class NmapCmd(Cmd):
                     mac_address TEXT NOT NULL
                   , ip TEXT NOT NULL
                   , expire TEXT NOT NULL
+                  , name TEXT
+                  , email TEXT
+                  , status TEXT
                 )
                 ''',
                 fetch = False,
@@ -105,10 +108,15 @@ class NmapCmd(Cmd):
         # calling wait here is a safety check to block until the command finished
         process.wait()
         macs = {}
-        
         # it's not clear why we're searching for 0x2 here
         # sample line here would be super handy
         # x02 denotes a mac address we're interested in
+        #  ---
+        # Output from cat /proc/net/arp looks like this:
+        # 172.31.24.153    0x1         0x2         00:0e:8e:25:04:ae     *        eth2
+        # The code below parses them. This only works on Linux (with a /proc
+        # filesystem), on other platforms we'll have to run ``arp`` and parse
+        # data differently.
         for line in stdout.split('\n'):
             if '0x2' in line:
                 cols = []
@@ -119,24 +127,11 @@ class NmapCmd(Cmd):
                 macs[cols[0]] = cols[3]
         print macs
 
-        # not sure what final represents here
-        final = {}
-        for k, v in macs.items():
-            # what's happening here?
-            if bag.nmap.ignore and k in bag.nmap.ignore:
-                continue
-                # create new dict to store output in handier
-            final[k] = {'mac_address': v}
-            if ips.has_key(k):
-                final[k]['host'] = ips[k]
-
-        print final
-        # ips_ ?
         ips_ = dict([(v,k) for k,v in macs.items()])
         # Remove the old ones if they're not present in the latest scan
         for person in bag.database.query('select * from person'):
-            if not person.get('expire') or datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
-               and person['mac_address'] not in macs.values():
+            if datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
+               or person['mac_address'] not in macs.values():
                 print "Removing mac %s"%person['mac_address']
                 bag.database.query('delete from person where mac_address = ?', (person['mac_address'],), fetch=False)
         # Now store them in the database

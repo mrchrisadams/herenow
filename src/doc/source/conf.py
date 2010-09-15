@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- #
+
+
 #
 # HereNow documentation build configuration file, based on 
 # sphinx-quickstart created in 2009.
