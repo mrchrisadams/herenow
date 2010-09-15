@@ -15,7 +15,7 @@ Here are the people:
 
 <ul>
 {% for person in person_list %}
-   <li><img src="{{ grav_image(person.macAddress)}}" >{{ person.macAddress }}
+   <li><img src="{{ grav_image(person.mac_address)}}" >{{ person.mac_address }}
    {% if marble.bag.http.environ['REMOTE_ADDR'] == person.ip %} THIS IS YOU! {% endif %}
    {{ person.ip }}
    </li>

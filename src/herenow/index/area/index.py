@@ -6,11 +6,11 @@ def grav_image(mac, size=200):
     gravatar_url += urllib.urlencode({'d':'monsterid', 's':str(size)})
     return gravatar_url
 
-@ensure_function_marble('mongo')
+@ensure_function_marble('database')
 def action_index(marble):
     return marble.render(
         'index/index.page',
         msg = 'hello world!',
-        person_list = marble.bag.mongo.person.find(),
+        person_list = marble.bag.database.query('select * from person'),
         grav_image = grav_image,
     )

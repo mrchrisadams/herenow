@@ -19,7 +19,7 @@ class HereNow(App):
         pipe('errorreport', 'errorreport:ErrorReportPipe'),
         pipe('http.input', 'httpkit.service.input:HttpInputPipe'),
         pipe('jinja2', 'jinja2pipe:Jinja2Pipe'),
-        pipe('mongo', 'mongodbpipe:MongoDBDatabasePipe'),
+        pipe('database', 'databasepipe.service.connection:DatabasePipe'),
         pipe('template', 'dreamweavertemplate.service:DwtPipe'),
         pipe('index', 'herenow.index:IndexPipe', mount_at='/'),
     ]
