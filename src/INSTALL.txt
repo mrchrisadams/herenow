@@ -1,6 +1,12 @@
 Install
 +++++++
 
+APt:
+
+::
+
+    sudo apt-get install git-core nmap
+
 Install:
 
 ::

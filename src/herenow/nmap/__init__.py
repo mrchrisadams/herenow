@@ -62,7 +62,7 @@ class NmapCmd(Cmd):
                 CREATE TABLE person (
                     mac_address TEXT NOT NULL
                   , ip TEXT NOT NULL
-                  , expire TEXT NOT NULL
+                  , expire TEXT
                   , name TEXT
                   , email TEXT
                   , status TEXT
@@ -125,15 +125,22 @@ class NmapCmd(Cmd):
                     if part.strip():
                         cols.append(part.strip())
                 macs[cols[0]] = cols[3]
+        macs[bag.nmap.subnet.split('/')[0]] = 'None'
         print macs
 
         ips_ = dict([(v,k) for k,v in macs.items()])
         # Remove the old ones if they're not present in the latest scan
         for person in bag.database.query('select * from person'):
-            if datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now() \
-               or person['mac_address'] not in macs.values():
+            if ((not person['expire']) or (datetime.datetime.strptime(person['expire'][:16], '%Y-%m-%d %H:%M') < datetime.datetime.now())) \
+               and person['mac_address'] not in macs.values():
                 print "Removing mac %s"%person['mac_address']
-                bag.database.query('delete from person where mac_address = ?', (person['mac_address'],), fetch=False)
+                #bag.database.query('delete from person where mac_address = ?', (person['mac_address'],), fetch=False)
+                bag.database.query(
+                    'update person set expire = NULL where mac_address = ?',
+                    (
+                        person['mac_address'],
+                    )
+                )
         # Now store them in the database
         for mac in macs.values():
             if not bag.database.query('select * from person where mac_address = ?', (mac,)):
@@ -154,5 +161,4 @@ class NmapCmd(Cmd):
                          mac, 
                     )
                 )
- 
 

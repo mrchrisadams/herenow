@@ -9,7 +9,7 @@ from recordconvert import toRecord
 from nestedrecord import encode_error
 
 def grav_image(mac, size=200):
-    gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(mac.lower()).hexdigest() + "?"
+    gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(mac.lower()+'mv1SLA2r/lsa6').hexdigest() + "?"
     gravatar_url += urllib.urlencode({'d':'monsterid', 's':str(size)})
     return gravatar_url
 
@@ -30,9 +30,9 @@ update_status = toRecord(
 def action_index(marble):
     error = None
     value = None
-    person_list = marble.bag.database.query('select * from person', format='dict')
+    person_list = marble.bag.database.query('select * from person where expire is not NULL', format='dict')
     for person in person_list:
-        if person['ip'] == marble.bag.http.environ['REMOTE_ADDR']:
+        if person['ip'] == marble.bag.http.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
             value = person
     if marble.bag.http.environ['REQUEST_METHOD'].upper() == 'POST':
         if not marble.bag.http.has_key('input'):
@@ -53,27 +53,47 @@ def action_index(marble):
             error = encode_error(conversion)
             value = params_conversion.result
         else:
-            marble.bag.database.query(
-                '''
-                UPDATE person
-                SET 
-                    name = ?
-                  , email = ?
-                  , status = ?
-                WHERE
-                    ip = ?
-                ''',
-                (
-                    params_conversion.result['name'],
-                    params_conversion.result['email'],
-                    params_conversion.result['status'],
-                    marble.bag.http.environ['REMOTE_ADDR'],
-                ),
-                fetch=False,
-            )
-            person_list = marble.bag.database.query('select * from person', format='dict')
+            if marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
+                marble.bag.database.query(
+                    '''
+                    UPDATE person
+                    SET 
+                        name = ?
+                      , email = ?
+                      , status = ?
+                    WHERE
+                        mac_address = 'None'
+                    ''',
+                    (
+                        params_conversion.result['name'],
+                        params_conversion.result['email'],
+                        params_conversion.result['status'],
+                    ),
+                    fetch=False,
+                )
+            else:
+                marble.bag.database.query(
+                    '''
+                    UPDATE person
+                    SET 
+                        name = ?
+                      , email = ?
+                      , status = ?
+                    WHERE
+                        ip = ?
+                    ''',
+                    (
+                        params_conversion.result['name'],
+                        params_conversion.result['email'],
+                        params_conversion.result['status'],
+                        marble.bag.http.environ['REMOTE_ADDR'],
+                    ),
+                    fetch=False,
+                )
+            person_list = marble.bag.database.query('select * from person where expire is not NULL', format='dict')
             for person in person_list:
-                if person['ip'] == marble.bag.http.environ['REMOTE_ADDR']:
+                if person['ip'] == marble.bag.http.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
+                #if person['ip'] == marble.bag.http.environ['REMOTE_ADDR']:
                     value = person
     return marble.render(
         'index/index.page',

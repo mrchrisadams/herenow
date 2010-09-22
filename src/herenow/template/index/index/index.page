@@ -17,7 +17,7 @@ Here are the people:
 <tr>
 <td valign="top">
     {% for person in person_list %}
-        {% if marble.bag.http.environ['REMOTE_ADDR'] == person.ip %}
+        {% if (marble.bag.http.environ['REMOTE_ADDR'] == person.ip) or (marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1' and person.mac_address == 'None') %}
             <div style="text-align: center; float:left; padding: 20px; height: 300px;">
                 {% if person.email %}
                     <img src="{{ grav_image_from_email(person.email)}}" ><br />
@@ -25,7 +25,7 @@ Here are the people:
                     <img src="{{ grav_image(person.mac_address)}}" ><br />
                 {% endif %}
                 <br />
-                {{ person.mac_address }}<br />
+                {# {{ person.mac_address }}<br /> #}
                 {{ person.ip }}
                 {{ form.start_with_layout() }}
                 {{ form.field(label='Name', name='name', type='text') }}
@@ -47,7 +47,7 @@ Here are the people:
                     <img src="{{ grav_image(person.mac_address)}}" ><br />
                 {% endif %}
                 <br />
-                {{ person.mac_address }}<br />
+                {# {{ person.mac_address }}<br /> #}
                 {{ person.ip }} <br />
                 {% if person.name %}{{ person.name }} <br />{% endif %}
                 {% if person.email %}{{ person.email }} <br />{% endif %}
