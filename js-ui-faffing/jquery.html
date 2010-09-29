@@ -5,6 +5,10 @@
 <title>Welcome</title>
 <!-- InstanceEndEditable --> 
 
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.5.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+
 </head>
 <body>
 <h1>
@@ -19,272 +23,282 @@ Here are the people:
 
 <script>
 // increase the default animation speed to exaggerate the effect
-$.fx.speeds._default = 1000;
-$(function() {
-	$( "#dialog" ).dialog({
-		autoOpen: false,
-		show: "blind",
-		hide: "explode"
-	});
 
-	$( "#opener" ).click(function() {
-		$( "#dialog" ).dialog( "open" );
-		return false;
-	});
-});
+
+$(document).ready(function() {
+
+
+  // Stuff to do as soon as the DOM is ready;
+
+
+    $('div.present').click(function() {
+      //debugger
+      var uid = $(this).find('span.uid').html();
+
+      // set the uid 
+      $('#dialog').find('form input[name=uid]').val(uid);
+      $("#dialog").dialog("open");
+  		return false;
+    });
+
+  	$( "#dialog" ).dialog({
+  		autoOpen: false,
+  		show: "blind",
+  		hide: "explode"
+  	});
+
+  });
+
 </script>
-
-
-
-
 <table border="0">
 <tbody><tr>
 <td valign="top">
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/f714edfc5fb866afe3a2891450596814"><br>
-                
-                <br>
-                
-                172.31.24.199
-                <form action="" method="post"><table class="formbuild">
-                <tbody><tr class="field">
-  <td class="label" valign="top" height="10">
-    <span style="visibility: hidden">*</span><label for="name">Name:</label>
-  </td>
-  <td class="field" valign="top">
-    <input type="text" name="name" value="mrchrisadams">
-  </td>
-  <td rowspan="2" valign="top">
-</tr>
-                <tr class="field">
-  <td class="label" valign="top" height="10">
-    <span style="visibility: hidden">*</span><label for="email">Email:</label>
-  </td>
-  <td class="field" valign="top">
-    <input type="text" name="email" value="wave@chrisadams.me.uk">
-  </td>
-  <td rowspan="2" valign="top">
-</tr>
-                <tr class="field">
-  <td class="label" valign="top" height="10">
-    <span style="visibility: hidden">*</span><label for="status">Status:</label>
-  </td>
-  <td class="field" valign="top">
-    <input type="text" name="status" value="back">
-  </td>
-  <td rowspan="2" valign="top">
-</tr>
-                <tr>
-  <td>
-  <td colspan="2">
-    <input type="submit" name="submit" value="Submit">
-  </td>
-</tr>
-                </tbody></table></form>
-            </div>
 
-        
-    
-        
-    
-        
-    
+
+<div id="messagebox">
+
+<div id="dialog" title="Send a message">
+
+<form action="jquery_submit" method="post" accept-charset="utf-8">
+
+<input name="uid" type="hidden" value="">
+<textarea name="msg" rows="4" cols="20">
+Type your message here
+
+</textarea>
+
+<p><input type="submit" value="Send Message"></p>
+</form>
+
+</div>
+
+</div>
+
+
+
+<div class="present" style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<span class="uid">172</span>
+
+<img src="./jquery_files/f714edfc5fb866afe3a2891450596814"><br>
+
+<br>
+
+172.31.24.199
+<form action="" method="post"><table class="formbuild">
+<tbody><tr class="field">
+<td class="label" valign="top" height="10">
+<span style="visibility: hidden">*</span><label for="name">Name:</label>
+</td>
+<td class="field" valign="top">
+<input type="text" name="name" value="mrchrisadams">
+</td>
+<td rowspan="2" valign="top">
+</tr>
+<tr class="field">
+<td class="label" valign="top" height="10">
+<span style="visibility: hidden">*</span><label for="email">Email:</label>
+</td>
+<td class="field" valign="top">
+<input type="text" name="email" value="wave@chrisadams.me.uk">
+</td>
+<td rowspan="2" valign="top">
+</tr>
+<tr class="field">
+<td class="label" valign="top" height="10">
+<span style="visibility: hidden">*</span><label for="status">Status:</label>
+</td>
+<td class="field" valign="top">
+<input type="text" name="status" value="back">
+</td>
+<td rowspan="2" valign="top">
+</tr>
+<tr>
+<td>
+<td colspan="2">
+<input type="submit" name="submit" value="Submit">
+</td>
+</tr>
+</tbody></table></form>
+</div>
+
+
+
+
+
+
+
 </td>
 <td valign="top">
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/faa0a4f672c17e1836757483fc119f63"><br>
-                
-                <br>
-                
-                172.31.24.169 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/daff3f178fb5e1b616b0ead3eae059c3"><br>
-                
-                <br>
-                
-                172.31.24.197 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/603bba29138a6fbc2bb378559e68a032"><br>
-                
-                <br>
-                
-                172.31.24.1 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/26419a8ba484c4ead786196c5c9a16ae"><br>
-                
-                <br>
-                
-                172.31.24.226 <br>
-                Lovelace <br>
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/45e4d8f01d5493cc48364c28ec56cbe6"><br>
-                
-                <br>
-                
-                172.31.24.122 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/3653ab641d58380491aa33b113147fcc"><br>
-                
-                <br>
-                
-                172.31.24.101 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/d72e7b35be9edc6252be6acd297427ed"><br>
-                
-                <br>
-                
-                172.31.24.123 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/55478c14e6831be2e33b9e41909a1322"><br>
-                
-                <br>
-                
-                172.31.24.231 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/8601bfcac2c74172321db6be2ba84204"><br>
-                
-                <br>
-                
-                172.31.24.166 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/1c9268288147a75ddc6813f44f26de7a"><br>
-                
-                <br>
-                
-                172.31.24.232 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/8b7ef59a13b0abc429664c93bd477327"><br>
-                
-                <br>
-                
-                172.31.24.102 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/f714edfc5fb866afe3a2891450596814"><br>
-                
-                <br>
-                
-                172.31.24.199 <br>
-                mrchrisadams <br>
-                wave@chrisadams.me.uk <br>
-                back 
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/5d9cc03ba476fe8bbe58f3d14dbd8812"><br>
-                
-                <br>
-                
-                172.31.24.170 <br>
-                
-                
-                
-            </div>
-    
-            <div style="text-align: center; float:left; padding: 20px; height: 300px;">
-                
-                    <img src="./jquery_files/53fe7b2de265a80ae7e73e070437bd4d"><br>
-                
-                <br>
-                
-                172.31.24.218 <br>
-                James Gardner <br>
-                
-                Happy! (but wet) 
-            </div>
-    
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/faa0a4f672c17e1836757483fc119f63"><br>
+
+<br>
+
+172.31.24.169 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/daff3f178fb5e1b616b0ead3eae059c3"><br>
+
+<br>
+
+172.31.24.197 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/603bba29138a6fbc2bb378559e68a032"><br>
+
+<br>
+
+172.31.24.1 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/26419a8ba484c4ead786196c5c9a16ae"><br>
+
+<br>
+
+172.31.24.226 <br>
+Lovelace <br>
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/45e4d8f01d5493cc48364c28ec56cbe6"><br>
+
+<br>
+
+172.31.24.122 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/3653ab641d58380491aa33b113147fcc"><br>
+
+<br>
+
+172.31.24.101 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/d72e7b35be9edc6252be6acd297427ed"><br>
+
+<br>
+
+172.31.24.123 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/55478c14e6831be2e33b9e41909a1322"><br>
+
+<br>
+
+172.31.24.231 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/8601bfcac2c74172321db6be2ba84204"><br>
+
+<br>
+
+172.31.24.166 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/1c9268288147a75ddc6813f44f26de7a"><br>
+
+<br>
+
+172.31.24.232 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/8b7ef59a13b0abc429664c93bd477327"><br>
+
+<br>
+
+172.31.24.102 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/f714edfc5fb866afe3a2891450596814"><br>
+
+<br>
+
+172.31.24.199 <br>
+mrchrisadams <br>
+wave@chrisadams.me.uk <br>
+back 
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/5d9cc03ba476fe8bbe58f3d14dbd8812"><br>
+
+<br>
+
+172.31.24.170 <br>
+
+
+
+</div>
+
+<div style="text-align: center; float:left; padding: 20px; height: 300px;">
+
+<img src="./jquery_files/53fe7b2de265a80ae7e73e070437bd4d"><br>
+
+<br>
+
+172.31.24.218 <br>
+James Gardner <br>
+
+Happy! (but wet) 
+</div>
+
 </td>
 </tr>
 </tbody></table>
