@@ -1,0 +1,4 @@
+{{ form.start_with_layout() }}
+{{ form.field(label='Message', name='msg', type='textarea', attributes=dict(cols=40, rows=10)) }}
+{{ form.action_bar(form.submit(name='submit')) }}
+{{ form.end_with_layout() }}

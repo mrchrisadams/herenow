@@ -38,6 +38,7 @@ class IndexPipe(BaseApp):
     default_aliases = AttributeDict(database='database')
     urls = [
         rule(u'{*}://{*}:{*}/',            add={u'area': u'index', u'action': u'index'}),
+        rule(u'{*}://{*}:{*}/{action}/{uid}',            add={u'area': u'index'}),
     ]
 
 
