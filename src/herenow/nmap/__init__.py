@@ -60,12 +60,24 @@ class NmapCmd(Cmd):
             bag.database.query(
                 '''
                 CREATE TABLE person (
-                    mac_address TEXT NOT NULL
+                    uid INTEGER PRIMARY KEY
+                  , mac_address TEXT NOT NULL
                   , ip TEXT NOT NULL
                   , expire TEXT
                   , name TEXT
                   , email TEXT
                   , status TEXT
+                )
+                ''',
+                fetch = False,
+            )
+            print "Creating the messages table..."
+            bag.database.query(
+                '''
+                CREATE TABLE msg (
+                    uid INTEGER PRIMARY KEY
+                  , msg TEXT NOT NULL
+                  , person__uid INTEGER FOREIGN KEY(person__uid) REFERENCES person(uid)
                 )
                 ''',
                 fetch = False,
