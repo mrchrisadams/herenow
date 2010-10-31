@@ -1,0 +1,19 @@
+# PipeStack
+AppDispatch
+Nestedrecord
+FormBuild
+FormConvert
+URLConvert
+TornadoPack
+PipeStack
+DreamweaverTemplate
+DatabasePipe
+SQLite3Database
+HTTPKit
+ErrorReport
+ErrorDocument
+StaticDispatch
+# Third Party
+Jinja2Pipe
+Jinja2>=2.5,<=2.5.99
+
