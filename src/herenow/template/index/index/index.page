@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block heading %}
-People in the HackSpace now
+{{ marble.bag.app.option.index.title }}
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@ Here are the people:
 <tr>
 <td valign="top" width="300">
     {% for person in person_list %}
-        {% if (marble.bag.http.environ['REMOTE_ADDR'] == person.ip) or (marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1' and person.mac_address == 'None') %}
+        {% if (marble.bag.environ['REMOTE_ADDR'] == person.ip) or (marble.bag.environ['REMOTE_ADDR'] == '127.0.0.1' and person.mac_address == 'None') %}
             <div style="text-align: center; float:left; padding: 20px; height: 300px;">
                 <h2 style="text-align: left">This is you!</h2>
 
@@ -59,6 +59,7 @@ Here are the people:
 <tr>
 <td></td>
 <td>
+    {% if not_here_list %}
     <h2>People you can leave a message for</h2>
     <p>They'll recieve the message the next time we notice they are in HackSpace.</p>
     {% for person in not_here_list %}
@@ -74,6 +75,9 @@ Here are the people:
                 {% if person.status %}{{ person.status }} {% endif %}
             </div>
     {% endfor %}
+    {% else %}
+    <p>There is currently no-one absent to leave a message for, just wander over and ask them.</p>
+    {% endif %}
 </td>
 </tr>
 </table>

@@ -16,12 +16,14 @@ from herenow.nmap import NmapCmd
 
 class HereNow(App):
     pipes = [
+        pipe('resolve', 'staticdispatch:ResolvePipe'),
         pipe('errorreport', 'errorreport:ErrorReportPipe'),
-        pipe('http.input', 'httpkit.service.input:HttpInputPipe'),
+        pipe('input', 'httpkit.service.input:InputPipe'),
         pipe('jinja2', 'jinja2pipe:Jinja2Pipe'),
         pipe('database', 'databasepipe.service.connection:DatabasePipe'),
         pipe('template', 'dreamweavertemplate.service:DwtPipe'),
         pipe('index', 'herenow.index:IndexPipe', mount_at='/'),
+        pipe('static', 'staticdispatch:StaticPipe'),
     ]
     commands = [
         command('serve', ServeCmd),
@@ -30,5 +32,5 @@ class HereNow(App):
     ]
 
 app = HereNow()
-app.handle_command_line(app.default_pipeline)
+app.handle_command_line()
 

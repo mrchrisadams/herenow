@@ -37,13 +37,13 @@ def action_index(marble):
     value = None
     person_list = marble.bag.database.query('select * from person where expire is not NULL', format='dict')
     for person in person_list:
-        if person['ip'] == marble.bag.http.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
+        if person['ip'] == marble.bag.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.environ['REMOTE_ADDR'] == '127.0.0.1':
             value = person
-    if marble.bag.http.environ['REQUEST_METHOD'].upper() == 'POST':
-        if not marble.bag.http.has_key('input'):
-            marble.bag.enter('http.input')
+    if marble.bag.environ['REQUEST_METHOD'].upper() == 'POST':
+        if not marble.bag.has_key('input'):
+            marble.bag.enter('input')
         params_conversion = Conversion(
-            marble.bag.http.input
+            marble.bag.input
         ).perform(
             multiDictToDict(encoding='utf-8'),
             marble.bag,
@@ -58,7 +58,7 @@ def action_index(marble):
             error = encode_error(conversion)
             value = params_conversion.result
         else:
-            if marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
+            if marble.bag.environ['REMOTE_ADDR'] == '127.0.0.1':
                 marble.bag.database.query(
                     '''
                     UPDATE person
@@ -91,14 +91,14 @@ def action_index(marble):
                         params_conversion.result['name'],
                         params_conversion.result['email'],
                         params_conversion.result['status'],
-                        marble.bag.http.environ['REMOTE_ADDR'],
+                        marble.bag.environ['REMOTE_ADDR'],
                     ),
                     fetch=False,
                 )
             person_list = marble.bag.database.query('select * from person where expire is not NULL', format='dict')
             for person in person_list:
-                if person['ip'] == marble.bag.http.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.http.environ['REMOTE_ADDR'] == '127.0.0.1':
-                #if person['ip'] == marble.bag.http.environ['REMOTE_ADDR']:
+                if person['ip'] == marble.bag.environ['REMOTE_ADDR'] or person['mac_address'] == 'None' and marble.bag.environ['REMOTE_ADDR'] == '127.0.0.1':
+                #if person['ip'] == marble.bag.environ['REMOTE_ADDR']:
                     value = person
     not_here_list = marble.bag.database.query(
         '''
@@ -126,11 +126,11 @@ def action_msg(marble):
     error = None
     value = None
     person__uid = marble.vars['uid']
-    if marble.bag.http.environ['REQUEST_METHOD'].upper() == 'POST':
-        if not marble.bag.http.has_key('input'):
-            marble.bag.enter('http.input')
+    if marble.bag.environ['REQUEST_METHOD'].upper() == 'POST':
+        if not marble.bag.has_key('input'):
+            marble.bag.enter('input')
         params_conversion = Conversion(
-            marble.bag.http.input
+            marble.bag.input
         ).perform(
             multiDictToDict(encoding='utf-8'),
             marble.bag,

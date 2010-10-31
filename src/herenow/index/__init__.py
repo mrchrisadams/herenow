@@ -9,7 +9,7 @@ import sys
 from appdispatch import BaseApp, AppMarble
 from bn import AttributeDict, uniform_path
 from conversionkit import Field, Conversion, noConversion
-from pipestack.ensure import ensure, ensure_self_marble
+from pipestack.ensure import ensure_self_marble
 from pipestack.pipe import MarblePipe, Marble, ConfigPipe
 from stringconvert import unicodeToUnicode
 from urlconvert import rule

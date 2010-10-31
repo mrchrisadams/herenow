@@ -77,7 +77,8 @@ class NmapCmd(Cmd):
                 CREATE TABLE msg (
                     uid INTEGER PRIMARY KEY
                   , msg TEXT NOT NULL
-                  , person__uid INTEGER FOREIGN KEY(person__uid) REFERENCES person(uid)
+                  , person__uid INTEGER 
+                  , FOREIGN KEY(person__uid) REFERENCES person(uid)
                 )
                 ''',
                 fetch = False,
