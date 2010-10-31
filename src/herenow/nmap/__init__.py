@@ -53,6 +53,7 @@ class NmapCmd(Cmd):
             bag.database.query(
                 '''
                 DROP TABLE IF EXISTS person;
+                DROP TABLE IF EXISTS msg;
                 ''',
                 fetch = False,
             )
