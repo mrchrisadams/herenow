@@ -1,6 +1,9 @@
 {
-  "name": "HereNow",
-    "version": "0.0.1",
-    "dependencies": {
-      "carrier": "0.1.7"
+    "name": "herenow"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.5.11"
+    , "jade": ">= 0.0.1"
+  }
 }
