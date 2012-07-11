@@ -1,0 +1,6 @@
+{
+  "name": "HereNow",
+    "version": "0.0.1",
+    "dependencies": {
+      "carrier": "0.1.7"
+}
