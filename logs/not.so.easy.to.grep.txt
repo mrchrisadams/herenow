@@ -1,0 +1,5 @@
+
+Starting Nmap 5.21 ( http://nmap.org ) at 2012-07-11 00:54 BST
+Nmap scan report for 192.168.0.9
+Host is up (0.00013s latency).
+Nmap done: 1 IP address (1 host up) scanned in 0.04 seconds
