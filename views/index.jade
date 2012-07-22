@@ -11,7 +11,9 @@
 
       each user in users
         ul
+        
           li=user.email
           li=user.username
+          img(src=gravatar.url(user.email, {s: '200', r: 'pg', d: '404'}))
 
 
