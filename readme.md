@@ -4,10 +4,9 @@ _do please bear with me while I well… make it work, but hopefully the readme b
 
 ## HereNow - a passive location based way to put an API on a building
 
-HereNow is a utility to add an API onto physical spaces by making
-educated guesses about who's in physical environment, based on whether
-laptops, iPads or smart phones they own are detected on networks serving
-the space at given moment.
+HereNow is a utility to add an API onto physical spaces by making educated guesses about who's in physical environment, based on whether laptops, iPads or smart phones they own are detected on networks serving the space at given moment. 
+
+##### Right now, the assumption here is that a space only has one wifi point, and here now only serves one network.
 
 ### Why would I care?
 
@@ -31,17 +30,17 @@ You should alreadu have `arp` on any version of OS X up to Lion (I'm not sure ab
 
 To get nmap, homebrew is your friend:
 
-  brew install nmap
+    brew install nmap
 
 #### On linux
 
 Assuming you're on Debian/Ubuntu if you're using Linux, `arp` you probably have too, but you may need to fetch `aptitude `:
 
-  sudo aptitude install nmap
+    sudo aptitude install nmap
 
 From there, you should be able to just use npm from within the app, to fetch all the relevant modules for javascript:
 
-  npm install
+    npm install
 
 
 ### How to use HereNow
@@ -50,15 +49,15 @@ HereNow uses `nmap` and `arp` to populate a list of _Devices_, that are then mat
 
 When you run the Herenow app, and visit the server it will maintain a list of Owners currently in a given space, that is updated whenever someone leaves or enters, and make this list available at a given url accessible from outside the space too.
 
-_Note - you can only see the full list of devices when inside the building yourself. From the outside, you can only see the list of users _
+*Note - you can only see the full list of devices when inside the building yourself. From the outside, you can only see the list of users.*
 
-_insert picture goes of list of people, and their gravatars in one group, then a collapsible list of machines, and a collapisble list of unknown devices_
+_insert picture here of list of people, and their gravatars in one group, then a collapsible list of machines, and a collapsible list of unknown devices_
 
 If you prefer to see this information over an API, you can hit the same url, but appending with the suffix `/owners`, to get a json array of the people listed, with a timestamp of the request made.
 
 If you know they are in the space, you can also fetch just the json representation of that single owner, like so:
 
-GET /owners/:username
+    GET /owners/:username.json
 
 
 
