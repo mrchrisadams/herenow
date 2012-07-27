@@ -1,4 +1,3 @@
-
 _I'm about to reimplement this project in javascript, with node.js and express, partly to learn the framework better, and also to make it easier for a few friends to work with. As a result, so I'm pushing this to github now, to shame me into finishing it more quickly._
 
 _do please bear with me while I well… make it work, but hopefully the readme below gives an idea of what I'm trying to build here_
@@ -103,17 +102,15 @@ The single most important feature of HereNow, is literally being able to see 'wh
 
 If you're connecting to the Herenow server inside the building, you can associate devices with other owners, by POSTing, to the user resource that represents that user, with an array of uuid's of devices to associate with them. Devices can only ever belong to one owner, so POSTing a device to one owner will remove them from any others.
 
-POST /owners/:username
+    POST /owners/:username
 
-POST /owners/mrchrisadams
-
-  { uuuid }
+    POST /owners/mrchrisadams
 
 To remove the device from the user, make a DELETE call to that nested device under the user resource.
 
-DELETE /owners/:username/:guid
+    DELETE /owners/:username/:guid
 
-DELETE /owners/mrchrisadadams/A8e32RkfQ44eAA8e32RkfQ44eAA8e32RkfQ44eA
+    DELETE /owners/mrchrisadadams/A8e32RkfQ44eAA8e32RkfQ44eAA8e32RkfQ44eA
 
 This has the affect of associating the device with `unknown` bucket once again, so it can be reassigned to someone else.
 
@@ -141,24 +138,24 @@ If this is the only online device associated with an owner, then that owner is r
 
 #### Endpoints
 
-GET owners
-GET owners/:username
+    GET owners
+    GET owners/:username
 
-From within the network
+From within the network:
 
-POST    owners/:username/:device_guid
-GET     owners/:username/:device_guid
-DELETE  owners/:username/:device_guid
+    POST    owners/:username/:device_guid
+    GET     owners/:username/:device_guid
+    DELETE  owners/:username/:device_guid
 
 #### Events
 
 Devices
 
-`status:online`
-`status:offline`
+    status:online
+    status:offline
 
 Owner
 
-`owner:online`
-`owner:offline`
-`owner:updated`
+    owner:online
+    owner:offline
+    owner:updated
