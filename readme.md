@@ -123,6 +123,17 @@ This has the affect of associating the device with `unknown` bucket once again, 
 
 There are three components that keep an upto date list of owners and devices. An `nmap` call fills the arp cache on a given network, with mac addresses and coresponding ip addresses. A subsequent call to `arp` then fetches this cache, and the main Herenow app, checks the cache against the current list of devices stored in redis, based on their mac address.
 
+d = Device.findByMac;
+
+u = User.findByDevice 
+
+if u.exists?
+ u.trigger('status:online')
+ else
+ u('new device')
+end
+
+
 #### If new devices exist in the arp cache
 
 a) the new device is created and the relevant details stored in redis, and a `new device` event is triggered

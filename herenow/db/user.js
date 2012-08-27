@@ -8,14 +8,13 @@
 //   status: offline|online
 // }
 
-
-exports.User = function() {
-  
-  
-  findByDevice: function(device) {
+var findByDevice =  function(device) {
     
-    // look in redis for mac address, using hget with the device's mac as the key
-    // then return the user hash, after updating status
-  }
-  
+  // look in redis for mac address, using hget with the device's mac as the key
+  // then return the user hash, after updating status
 }
+
+
+
+
+exports.findByDevice = findByDevice

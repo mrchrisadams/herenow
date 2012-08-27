@@ -7,11 +7,8 @@
   .row
     .hero-unit
 
-      - var users = [ { email: "wave@chrisadams.me.uk", username: "mrchrisadams"} ]
-
       each user in users
         ul
-        
           li=user.email
           li=user.username
           img(src=gravatar.url(user.email, {s: '200', r: 'pg', d: '404'}))

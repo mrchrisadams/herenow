@@ -10,12 +10,11 @@
 //   
 // };
 
-exports.Device = function() {
-  
-  
-  findByMac: function(mac) {
-    // look in redis for mac address, using hget with the device's mac as the key
-    // then return the device object after updating status, and ip requesting address
-  }
-  
+var findByMac = function(mac) {
+  // look in redis for mac address, using hget with the device's mac as the key
+  // then return the device object after updating status, and ip requesting address
 }
+
+exports.findByMac = findByMac
+  
+  
