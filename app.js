@@ -55,6 +55,6 @@ monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
 });
 
-monitor.on('dosconnected', function (mac) {
+monitor.on('disconnected', function (mac) {
   console.log("Device disconnected: " + mac);
 });
