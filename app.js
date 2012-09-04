@@ -47,12 +47,17 @@ monitor.start();
 
 // Wire monitor events to event handlers
 
+var DeviceIdentifier = require('./lib/device_identifier.js');
+var device_identifier = new DeviceIdentifier();
+
 monitor.on('connected', function (mac) {
   console.log("New device detected: " + mac);
+  device_identifier.identify(mac);
 });
 
 monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
+  device_identifier.identify(mac);
 });
 
 monitor.on('disconnected', function (mac) {

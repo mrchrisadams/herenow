@@ -30,6 +30,7 @@
             div.thumbnail
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
               h3=device.name||device.mac
+              p=device.type
 
       h3 Disconnected devices
       ul.thumbnails
@@ -39,3 +40,4 @@
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
               h4.away=device.name||device.mac
               p.away=device.user||''
+              p=device.type
