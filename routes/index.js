@@ -4,28 +4,78 @@
  */
 
 var gravatar = require('gravatar')
+var db = require('../lib/db')
 
 exports.index = function(req, res){
-  res.render('index', { 
-    title: 'Express', 
-    location: "ShoreditchWorks",
-    gravatar: gravatar,
-    users : [ 
-      { email: "wave@chrisadams.me.uk", username: "mrchrisadams" }, 
-      { email: "null@void.com", username: "not_known_yet" }
-    ],
-    // add our unidentified devices
-    unidentifiedDevices :[
-      { ip: "192.168.1.5", mac : "00:1e:c2:a4:d7:2e" },
-      { ip: "192.168.1.6", mac : "00:1a:a2:e4:d3:1a" },
-      { ip: "192.168.1.7", mac : "00:1a:a6:a6:d7:2d" },
-    ],
 
-    // add our unidentified devices
-    knownDevices : [
-      { ip: "192.168.1.8", mac : "00:1a:a2:a6:d7:2c", name: "A printer" },
-      { ip: "192.168.1.8", mac : "00:1a:a2:a1:a3:3a", name: "the router" },
-    ]
-    
-  })
+  // Device list
+  mac_addresses = []
+  allDevices = []
+  
+  // Load mac addresses from redis
+  db.smembers("all_devices", load_mac_addresses);  
+  
+  function load_mac_addresses(err, devices) {
+    /* Store all MAC addresses */
+    if (devices == null)
+      mac_addresses = []
+    else
+      mac_addresses = devices    
+    /* Load individual device data */
+    get_next_device();
+  }
+
+  function load_device_data(err, data) {
+    /* Store device data */
+    if (data != null)
+      allDevices.push(data)
+    /* Get more data */
+    get_next_device();
+  }
+
+  function get_next_device() {
+    // Pop next mac off list
+    mac = mac_addresses.pop();
+    // Get device data from redis if there is more to load
+    if (mac != null)
+      db.hgetall(mac, load_device_data);
+    // If not, render the page
+    else
+      render();
+  }
+
+  function render() {
+
+    // Static list of users for now
+    users = [ 
+      { email: "wave@chrisadams.me.uk", username: "mrchrisadams", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "mrchrisadams" && element['ip'] != null); }) }, 
+      { email: "james@floppy.org.uk", username: "floppy", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "floppy" && element['ip'] != null); })  }
+    ];
+
+    res.render('index', { 
+      title: 'HereNow', 
+      location: "ShoreditchWorks",
+      gravatar: gravatar,
+        
+      presentUsers : users.filter(function hasDevicesPresent(element, index, array) {
+        return (element['devices'].length > 0);
+      }),
+        
+      awayUsers : users.filter(function hasNoDevicesPresent(element, index, array) {
+        return (element['devices'].length == 0);
+      }),
+
+      ownerlessDevices : allDevices.filter(function hasNoOwner(element, index, array) {
+        return (element['user'] == null && element['ip'] != null);
+      }),
+
+      disconnectedDevices : allDevices.filter(function hasNoOwner(element, index, array) {
+        return (element['ip'] == null);
+      })
+
+    })
+  }
+  
+
+
 };
