@@ -32,17 +32,17 @@ You should alreadu have `arp` on any version of OS X up to Lion (I'm not sure ab
 
 To get nmap, homebrew is your friend:
 
-  brew install nmap
+    brew install nmap
 
 #### On linux
 
 Assuming you're on Debian/Ubuntu if you're using Linux, `arp` you probably have too, but you may need to fetch `aptitude `:
 
-  sudo aptitude install nmap
+    sudo aptitude install nmap
 
 From there, you should be able to just use npm from within the app, to fetch all the relevant modules for javascript:
 
-  npm install
+    npm install
 
 
 ### How to use HereNow
@@ -59,7 +59,7 @@ If you prefer to see this information over an API, you can hit the same url, but
 
 If you know they are in the space, you can also fetch just the json representation of that single owner, like so:
 
-GET /owners/:username
+    GET /owners/:username
 
 
 
@@ -103,17 +103,17 @@ The single most important feature of HereNow, is literally being able to see 'wh
 
 If you're connecting to the Herenow server inside the building, you can associate devices with other owners, by POSTing, to the user resource that represents that user, with an array of uuid's of devices to associate with them. Devices can only ever belong to one owner, so POSTing a device to one owner will remove them from any others.
 
-POST /owners/:username
+    POST /owners/:username
 
-POST /owners/mrchrisadams
+    POST /owners/mrchrisadams
 
-  { uuuid }
+    { uuuid }
 
 To remove the device from the user, make a DELETE call to that nested device under the user resource.
 
-DELETE /owners/:username/:guid
+    DELETE /owners/:username/:guid
 
-DELETE /owners/mrchrisadadams/A8e32RkfQ44eAA8e32RkfQ44eAA8e32RkfQ44eA
+    DELETE /owners/mrchrisadadams/A8e32RkfQ44eAA8e32RkfQ44eAA8e32RkfQ44eA
 
 This has the affect of associating the device with `unknown` bucket once again, so it can be reassigned to someone else.
 
@@ -123,15 +123,16 @@ This has the affect of associating the device with `unknown` bucket once again, 
 
 There are three components that keep an upto date list of owners and devices. An `nmap` call fills the arp cache on a given network, with mac addresses and coresponding ip addresses. A subsequent call to `arp` then fetches this cache, and the main Herenow app, checks the cache against the current list of devices stored in redis, based on their mac address.
 
-d = Device.findByMac;
+    // (rubyesque pseudo code)
+    d = Device.findByMac;
 
-u = User.findByDevice 
+    u = User.findByDevice 
 
-if u.exists?
- u.trigger('status:online')
- else
- u('new device')
-end
+    if u.exists?
+     u.trigger('status:online')
+     else
+     u('new device')
+    end
 
 
 #### If new devices exist in the arp cache
@@ -152,24 +153,24 @@ If this is the only online device associated with an owner, then that owner is r
 
 #### Endpoints
 
-GET owners
-GET owners/:username
+    GET owners
+    GET owners/:username
 
 From within the network
 
-POST    owners/:username/:device_guid
-GET     owners/:username/:device_guid
-DELETE  owners/:username/:device_guid
+    POST    owners/:username/:device_guid
+    GET     owners/:username/:device_guid
+    DELETE  owners/:username/:device_guid
 
 #### Events
 
 Devices
 
-`status:online`
-`status:offline`
+    status:online
+    status:offline
 
 Owner
 
-`owner:online`
-`owner:offline`
-`owner:updated`
+    owner:online
+    owner:offline
+    owner:updated
