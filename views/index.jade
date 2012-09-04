@@ -8,27 +8,34 @@
     .hero-unit
     
       h3 Known people in this space
-        ul.thumbnails
-          each user in users
-            li.span2
-              div.thumbnail
-                img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username)
-                h3=user.username
+      ul.thumbnails
+        each user in presentUsers
+          li.span2
+            div.thumbnail
+              img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username)
+              h3=user.username
+              ul.unstyled
+                each device in user.devices
+                  li=device.name||device.mac                
+        each user in awayUsers
+          li.span2
+            div.thumbnail
+              img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username,class='away')
+              h3.away=user.username
 
-
-      h3 Owned devices
-        ul.thumbnails
-          each device in ownedDevices
-            li.span2
-              div.thumbnail
-                img(src=gravatar.url(device.name||device.mac, {s: '200', r: 'r', d: 'retro'}))
-                h4=device.name||device.mac
-                p=device.user
-        
       h3 Ownerless devices
-        ul.thumbnails
-          each device in ownerlessDevices
-            li.span2
-              div.thumbnail
-                img(src=gravatar.url(device.mac, {s: '200', r: 'r', d: 'retro'}))
-                h4=device.name||device.mac
+      ul.thumbnails
+        each device in ownerlessDevices
+          li.span2
+            div.thumbnail
+              img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
+              h3=device.name||device.mac
+
+      h3 Disconnected devices
+      ul.thumbnails
+        each device in disconnectedDevices
+          li.span2
+            div.thumbnail
+              img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
+              h4.away=device.name||device.mac
+              p.away=device.user||''

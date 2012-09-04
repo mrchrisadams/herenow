@@ -6,6 +6,7 @@
 var gravatar = require('gravatar')
 
 exports.index = function(req, res){
+  
   allDevices = [
     { ip: "192.168.1.8", mac : "00:1a:a2:a6:d7:2c", name: "HP Printer", type: 'printer' },
     { ip: "192.168.1.8", mac : "00:1a:a2:a1:a3:3a", name: "Netgear Router", type: 'router' },
@@ -14,25 +15,32 @@ exports.index = function(req, res){
     { ip: "192.168.1.7", mac : "00:1a:a6:a6:d7:2d" },
   ];
   
+  users = [ 
+    { email: "wave@chrisadams.me.uk", username: "mrchrisadams", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "mrchrisadams" && element['ip'] != null); }) }, 
+    { email: "james@floppy.org.uk", username: "floppy", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "floppy" && element['ip'] != null); })  }
+  ];
+
   res.render('index', { 
     title: 'HereNow', 
     location: "ShoreditchWorks",
     gravatar: gravatar,
-    
-    // Some users
-    users : [ 
-      { email: "wave@chrisadams.me.uk", username: "mrchrisadams" }, 
-      { email: "james@floppy.org.uk", username: "floppy" }
-    ],
-    
-    // split into owned and ownerless devices
-    ownedDevices : allDevices.filter(function hasOwner(element, index, array) {
-      return (element['user'] != null && element['ip'] != null);
+        
+    presentUsers : users.filter(function hasDevicesPresent(element, index, array) {
+      return (element['devices'].length > 0);
     }),
-    
+        
+    awayUsers : users.filter(function hasNoDevicesPresent(element, index, array) {
+      return (element['devices'].length == 0);
+    }),
+
     ownerlessDevices : allDevices.filter(function hasNoOwner(element, index, array) {
       return (element['user'] == null && element['ip'] != null);
+    }),
+
+    disconnectedDevices : allDevices.filter(function hasNoOwner(element, index, array) {
+      return (element['ip'] == null);
     })
+
 
   })
 };

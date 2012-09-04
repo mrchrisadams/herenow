@@ -1,3 +1,7 @@
 .thumbnail {
   text-align: center;
 }
+
+.away {
+  opacity: 0.25;
+}
