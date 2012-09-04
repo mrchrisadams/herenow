@@ -1,14 +1,12 @@
-
 _I'm about to reimplement this project in javascript, with node.js and express, partly to learn the framework better, and also to make it easier for a few friends to work with. As a result, so I'm pushing this to github now, to shame me into finishing it more quickly._
 
 _do please bear with me while I well… make it work, but hopefully the readme below gives an idea of what I'm trying to build here_
 
 ## HereNow - a passive location based way to put an API on a building
 
-HereNow is a utility to add an API onto physical spaces by making
-educated guesses about who's in physical environment, based on whether
-laptops, iPads or smart phones they own are detected on networks serving
-the space at given moment.
+HereNow is a utility to add an API onto physical spaces by making educated guesses about who's in physical environment, based on whether laptops, iPads or smart phones they own are detected on networks serving the space at given moment. 
+
+##### Right now, the assumption here is that a space only has one wifi point, and here now only serves one network.
 
 ### Why would I care?
 
@@ -51,9 +49,9 @@ HereNow uses `nmap` and `arp` to populate a list of _Devices_, that are then mat
 
 When you run the Herenow app, and visit the server it will maintain a list of Owners currently in a given space, that is updated whenever someone leaves or enters, and make this list available at a given url accessible from outside the space too.
 
-_Note - you can only see the full list of devices when inside the building yourself. From the outside, you can only see the list of users _
+*Note - you can only see the full list of devices when inside the building yourself. From the outside, you can only see the list of users.*
 
-_insert picture goes of list of people, and their gravatars in one group, then a collapsible list of machines, and a collapisble list of unknown devices_
+_insert picture here of list of people, and their gravatars in one group, then a collapsible list of machines, and a collapsible list of unknown devices_
 
 If you prefer to see this information over an API, you can hit the same url, but appending with the suffix `/owners`, to get a json array of the people listed, with a timestamp of the request made.
 
@@ -61,6 +59,7 @@ If you know they are in the space, you can also fetch just the json representati
 
     GET /owners/:username
 
+    GET /owners/:username.json
 
 
 ### Key concepts for Herenow
@@ -156,7 +155,7 @@ If this is the only online device associated with an owner, then that owner is r
     GET owners
     GET owners/:username
 
-From within the network
+From within the network:
 
     POST    owners/:username/:device_guid
     GET     owners/:username/:device_guid
