@@ -27,7 +27,6 @@ exports.index = function(req, res){
     
     // split into owned and ownerless devices
     ownedDevices : allDevices.filter(function hasOwner(element, index, array) {
-      console.log(element);
       return (element['user'] != null);
     }),
     
