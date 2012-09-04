@@ -7,34 +7,28 @@
   .row
     .hero-unit
     
-      //- show the people first
-      h4 Known people in this space
-        ul.row
+      h3 Known people in this space
+        ul.thumbnails
           each user in users
-            li.span3
-              ul
-                li
-                  img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}))
-                li=user.email
-                li=user.username
+            li.span2
+              div.thumbnail
+                img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username)
+                h3=user.username
 
 
-      h4 Unidentified devices in this space    
-        ul.row
-          each device in unidentifiedDevices
-            li.span3
-              ul
-                li
-                  img(src=gravatar.url(device.mac, {s: '200', r: 'r', d: 'retro'}))
-                li=device.ip
-                li=device.mac
+      h3 Owned devices
+        ul.thumbnails
+          each device in ownedDevices
+            li.span2
+              div.thumbnail
+                img(src=gravatar.url(device.name||device.mac, {s: '200', r: 'r', d: 'retro'}))
+                h4=device.name||device.mac
+                p=device.user
         
-      h4 Known devices that can be ignored
-        ul.row
-          each device in knownDevices
-            li.span3
-              ul
-                li
-                  img(src=gravatar.url(device.name, {s: '200', r: 'r', d: 'retro'}))
-                li=device.ip
-                li=device.mac
+      h3 Ownerless devices
+        ul.thumbnails
+          each device in ownerlessDevices
+            li.span2
+              div.thumbnail
+                img(src=gravatar.url(device.mac, {s: '200', r: 'r', d: 'retro'}))
+                h4=device.name||device.mac
