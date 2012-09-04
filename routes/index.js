@@ -4,43 +4,78 @@
  */
 
 var gravatar = require('gravatar')
+var db = require('../lib/db')
 
 exports.index = function(req, res){
+
+  // Device list
+  mac_addresses = []
+  allDevices = []
   
-  allDevices = [
-    { ip: "192.168.1.8", mac : "00:1a:a2:a6:d7:2c", name: "HP Printer", type: 'printer' },
-    { ip: "192.168.1.8", mac : "00:1a:a2:a1:a3:3a", name: "Netgear Router", type: 'router' },
-    { ip: "192.168.1.5", mac : "00:1e:c2:a4:d7:2e", name: "Chris' iPhone", type: 'phone', user: "mrchrisadams" },
-    { mac : "00:1a:a2:e4:d3:1a", user: "mrchrisadams", type: 'laptop' },
-    { ip: "192.168.1.7", mac : "00:1a:a6:a6:d7:2d" },
-  ];
+  // Load mac addresses from redis
+  db.smembers("all_devices", load_mac_addresses);  
   
-  users = [ 
-    { email: "wave@chrisadams.me.uk", username: "mrchrisadams", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "mrchrisadams" && element['ip'] != null); }) }, 
-    { email: "james@floppy.org.uk", username: "floppy", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "floppy" && element['ip'] != null); })  }
-  ];
+  function load_mac_addresses(err, devices) {
+    /* Store all MAC addresses */
+    if (devices == null)
+      mac_addresses = []
+    else
+      mac_addresses = devices    
+    /* Load individual device data */
+    get_next_device();
+  }
 
-  res.render('index', { 
-    title: 'HereNow', 
-    location: "ShoreditchWorks",
-    gravatar: gravatar,
+  function load_device_data(err, data) {
+    /* Store device data */
+    if (data != null)
+      allDevices.push(data)
+    /* Get more data */
+    get_next_device();
+  }
+
+  function get_next_device() {
+    // Pop next mac off list
+    mac = mac_addresses.pop();
+    // Get device data from redis if there is more to load
+    if (mac != null)
+      db.hgetall(mac, load_device_data);
+    // If not, render the page
+    else
+      render();
+  }
+
+  function render() {
+
+    // Static list of users for now
+    users = [ 
+      { email: "wave@chrisadams.me.uk", username: "mrchrisadams", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "mrchrisadams" && element['ip'] != null); }) }, 
+      { email: "james@floppy.org.uk", username: "floppy", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "floppy" && element['ip'] != null); })  }
+    ];
+
+    res.render('index', { 
+      title: 'HereNow', 
+      location: "ShoreditchWorks",
+      gravatar: gravatar,
         
-    presentUsers : users.filter(function hasDevicesPresent(element, index, array) {
-      return (element['devices'].length > 0);
-    }),
+      presentUsers : users.filter(function hasDevicesPresent(element, index, array) {
+        return (element['devices'].length > 0);
+      }),
         
-    awayUsers : users.filter(function hasNoDevicesPresent(element, index, array) {
-      return (element['devices'].length == 0);
-    }),
+      awayUsers : users.filter(function hasNoDevicesPresent(element, index, array) {
+        return (element['devices'].length == 0);
+      }),
 
-    ownerlessDevices : allDevices.filter(function hasNoOwner(element, index, array) {
-      return (element['user'] == null && element['ip'] != null);
-    }),
+      ownerlessDevices : allDevices.filter(function hasNoOwner(element, index, array) {
+        return (element['user'] == null && element['ip'] != null);
+      }),
 
-    disconnectedDevices : allDevices.filter(function hasNoOwner(element, index, array) {
-      return (element['ip'] == null);
+      disconnectedDevices : allDevices.filter(function hasNoOwner(element, index, array) {
+        return (element['ip'] == null);
+      })
+
     })
+  }
+  
 
 
-  })
 };
