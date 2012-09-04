@@ -5,7 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , herenow = require('./herenow/herenow'); 
+  , herenow = require('./herenow/herenow');
   
 var app = module.exports = express.createServer();
 
@@ -36,3 +36,7 @@ app.get('/', routes.index);
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
+
+var Monitor = require('./lib/monitor.js');
+var monitor = new Monitor();
+monitor.start();
