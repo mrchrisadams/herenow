@@ -33,10 +33,28 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
+// Start web listener
+
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 
+// Start network monitor
+
 var Monitor = require('./lib/monitor.js');
 var monitor = new Monitor();
 monitor.start();
+
+// Wire monitor events to event handlers
+
+monitor.on('connected', function (mac) {
+  console.log("New device detected: " + mac);
+});
+
+monitor.on('reconnected', function (mac) {
+  console.log("Known device detected: " + mac);
+});
+
+monitor.on('dosconnected', function (mac) {
+  console.log("Device disconnected: " + mac);
+});
