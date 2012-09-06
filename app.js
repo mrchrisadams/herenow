@@ -60,6 +60,11 @@ monitor.on('reconnected', function (mac) {
   device_identifier.identify(mac);
 });
 
+monitor.on('stillconnected', function (mac) {
+  console.log("Known device still here: " + mac);
+  device_identifier.identify(mac);
+});
+
 monitor.on('disconnected', function (mac) {
   console.log("Device disconnected: " + mac);
 });
