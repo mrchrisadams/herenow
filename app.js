@@ -45,6 +45,11 @@ var Monitor = require('./lib/monitor.js');
 var monitor = new Monitor();
 monitor.start();
 
+// Start mDNS browser
+var MDNSBrowser = require('./lib/mdns_browser.js');
+var mdns_browser = new MDNSBrowser();
+mdns_browser.start();
+
 // Wire monitor events to device identification
 
 var PortScanner = require('./lib/port_scanner.js');
@@ -71,6 +76,11 @@ monitor.on('disconnected', function (mac) {
 
 port_scanner.on('complete', function (mac) {
   console.log("Port scan complete: " + mac);
+  device_identifier.attempt_identification(mac);
+});
+
+mdns_browser.on('updated', function (mac) {
+  console.log("mDNS services updated: " + mac);
   device_identifier.attempt_identification(mac);
 });
 
