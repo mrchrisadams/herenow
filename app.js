@@ -58,6 +58,9 @@ var port_scanner = new PortScanner();
 var DeviceIdentifier = require('./lib/device_identifier.js');
 var device_identifier = new DeviceIdentifier();
 
+var PowerProfiler = require('./lib/power_profiler.js');
+var power_profiler = new PowerProfiler();
+
 monitor.on('connected', function (mac) {
   console.log("New device detected: " + mac);
   device_identifier.attempt_identification(mac);
@@ -72,6 +75,7 @@ monitor.on('reconnected', function (mac) {
 
 monitor.on('disconnected', function (mac) {
   console.log("Device disconnected: " + mac);
+  power_profiler.device_off(mac);
 });
 
 port_scanner.on('complete', function (mac) {
@@ -86,4 +90,5 @@ mdns_browser.on('updated', function (mac) {
 
 device_identifier.on('device_identified', function (mac) {
   console.log("Device identified: " + mac);
+  power_profiler.device_on(mac);
 });
