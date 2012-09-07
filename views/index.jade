@@ -23,6 +23,13 @@
               img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username,class='away')
               h3.away=user.username
 
+      h3 Power status
+        dl
+          dt Power
+          dd=power_state.power + 'W'
+          dt Storage
+          dd=power_state.storage + 'kWh'
+
       h3 Ownerless devices
       ul.thumbnails
         each device in ownerlessDevices

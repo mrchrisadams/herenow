@@ -11,6 +11,7 @@ exports.index = function(req, res){
   // Device list
   mac_addresses = []
   allDevices = []
+  power_state = {}
   
   // Load mac addresses from redis
   db.smembers("all_devices", load_mac_addresses);  
@@ -41,7 +42,12 @@ exports.index = function(req, res){
       db.hgetall(mac, load_device_data);
     // If not, render the page
     else
-      render();
+      db.hgetall('power_state', load_power_state);
+  }
+  
+  function load_power_state(err, data) {
+    power_state = data;
+    render();
   }
 
   function render() {
