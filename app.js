@@ -45,26 +45,35 @@ var Monitor = require('./lib/monitor.js');
 var monitor = new Monitor();
 monitor.start();
 
-// Wire monitor events to event handlers
+// Wire monitor events to device identification
+
+var PortScanner = require('./lib/port_scanner.js');
+var port_scanner = new PortScanner();
 
 var DeviceIdentifier = require('./lib/device_identifier.js');
 var device_identifier = new DeviceIdentifier();
 
 monitor.on('connected', function (mac) {
   console.log("New device detected: " + mac);
-  device_identifier.identify(mac);
+  device_identifier.attempt_identification(mac);
+  port_scanner.scan(mac);
 });
 
 monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
-  device_identifier.identify(mac);
-});
-
-monitor.on('stillconnected', function (mac) {
-  console.log("Known device still here: " + mac);
-  device_identifier.identify(mac);
+  device_identifier.attempt_identification(mac);
+  port_scanner.scan(mac);
 });
 
 monitor.on('disconnected', function (mac) {
   console.log("Device disconnected: " + mac);
+});
+
+port_scanner.on('complete', function (mac) {
+  console.log("Port scan complete: " + mac);
+  device_identifier.attempt_identification(mac);
+});
+
+device_identifier.on('device_identified', function (mac) {
+  console.log("Device identified: " + mac);
 });
