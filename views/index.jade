@@ -26,9 +26,9 @@
       h3 Power status
         dl
           dt Power
-          dd=power_state.power + 'W'
+          dd=power_state.power + ' W'
           dt Storage
-          dd=power_state.storage + 'kWh'
+          dd=power_state.storage + ' Wh'
 
       h3 Ownerless devices
       ul.thumbnails
@@ -38,6 +38,7 @@
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
               h3=device.name||device.model||device.mac
               p=device.type
+              p=device.power + ' W / ' + device.storage + ' Wh'
 
       h3 Disconnected devices
       ul.thumbnails

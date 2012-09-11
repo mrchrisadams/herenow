@@ -65,12 +65,14 @@ monitor.on('connected', function (mac) {
   console.log("New device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
+  power_profiler.device_on(mac);
 });
 
 monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
+  power_profiler.device_on(mac);
 });
 
 monitor.on('disconnected', function (mac) {
@@ -90,5 +92,6 @@ mdns_browser.on('updated', function (mac) {
 
 device_identifier.on('device_identified', function (mac) {
   console.log("Device identified: " + mac);
+  power_profiler.device_off(mac);
   power_profiler.device_on(mac);
 });
