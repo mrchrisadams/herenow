@@ -47,6 +47,10 @@ var MDNSBrowser = require('./lib/mdns_browser.js');
 var mdns_browser = new MDNSBrowser();
 mdns_browser.start();
 
+// Set up AMON connection
+var Amon = require('./lib/amon.js');
+var amon = new Amon();
+
 // Wire monitor events to device identification
 
 var PortScanner = require('./lib/port_scanner.js');
@@ -63,6 +67,7 @@ monitor.on('connected', function (mac) {
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
   power_profiler.device_on(mac);
+  amon.add_device(mac);
 });
 
 monitor.on('reconnected', function (mac) {
@@ -70,6 +75,7 @@ monitor.on('reconnected', function (mac) {
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
   power_profiler.device_on(mac);
+  amon.add_device(mac);
 });
 
 monitor.on('disconnected', function (mac) {
