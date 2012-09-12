@@ -73,9 +73,9 @@ monitor.on('connected', function (mac) {
 monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
   device_identifier.attempt_identification(mac);
+  amon.update_device(mac);
   port_scanner.scan(mac);
   power_profiler.device_on(mac);
-  amon.add_device(mac);
 });
 
 monitor.on('disconnected', function (mac) {
@@ -95,6 +95,7 @@ mdns_browser.on('updated', function (mac) {
 
 device_identifier.on('device_identified', function (mac) {
   console.log("Device identified: " + mac);
+  amon.update_device(mac);
   power_profiler.device_off(mac);
   power_profiler.device_on(mac);
 });
