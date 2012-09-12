@@ -42,6 +42,27 @@ From there, you should be able to just use npm from within the app, to fetch all
 
     npm install
 
+### How to configure
+
+Make copies of the example configurations in the config directory, removing 'example' from the name. Edit each one and add 
+your own settings as appropriate.
+
+The main settings are in config/monitor.js and are:
+
+ * interface_name: the system name of the network interface to scan. On OSX, this will be something like en0, on Linux something like eth0.
+ * nmap_delay: the time between each rescan of the network, in milliseconds.
+ 
+### How to run
+
+From the app root directory:
+
+    node app.js
+    
+Navigate to http://localhost:3000 to see the web interface.
+
+## Proposed interface (WIP)
+
+Much of the information below is proposed, and doesn't actually work yet. At the moment, you can see connected devices in the web interface and that's about it.
 
 ### How to use HereNow
 
