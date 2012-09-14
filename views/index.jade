@@ -38,7 +38,8 @@
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
               h3=device.name||device.model||device.mac
               p=device.type
-              p=device.power + ' W / ' + device.storage + ' Wh'
+              if device.power
+                p=device.power + ' W / ' + (device.storage||'0') + ' Wh'
 
       h3 Disconnected devices
       ul.thumbnails
