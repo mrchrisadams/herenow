@@ -16,7 +16,7 @@
               h3=user.username
               ul.unstyled
                 each device in user.devices
-                  li=device.name||device.mac                
+                  li=device.name||device.model||device.mac                
         each user in awayUsers
           li.span2
             div.thumbnail
@@ -29,7 +29,7 @@
           li.span2
             div.thumbnail
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
-              h3=device.name||device.mac
+              h3=device.name||device.model||device.mac
               p=device.type
 
       h3 Disconnected devices
@@ -38,6 +38,6 @@
           li.span2
             div.thumbnail
               img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
-              h4.away=device.name||device.mac
+              h4.away=device.name||device.model||device.mac
               p.away=device.user||''
               p=device.type

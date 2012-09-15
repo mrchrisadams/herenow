@@ -7,11 +7,8 @@ var express = require('express')
   , routes = require('./routes')
   , herenow = require('./herenow/herenow');
   
+// Set up express server
 var app = module.exports = express.createServer();
-
-
-// Configuration
-
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -45,21 +42,45 @@ var Monitor = require('./lib/monitor.js');
 var monitor = new Monitor();
 monitor.start();
 
-// Wire monitor events to event handlers
+// Start mDNS browser
+var MDNSBrowser = require('./lib/mdns_browser.js');
+var mdns_browser = new MDNSBrowser();
+mdns_browser.start();
+
+// Wire monitor events to device identification
+
+var PortScanner = require('./lib/port_scanner.js');
+var port_scanner = new PortScanner();
 
 var DeviceIdentifier = require('./lib/device_identifier.js');
 var device_identifier = new DeviceIdentifier();
 
 monitor.on('connected', function (mac) {
   console.log("New device detected: " + mac);
-  device_identifier.identify(mac);
+  device_identifier.attempt_identification(mac);
+  port_scanner.scan(mac);
 });
 
 monitor.on('reconnected', function (mac) {
   console.log("Known device detected: " + mac);
-  device_identifier.identify(mac);
+  device_identifier.attempt_identification(mac);
+  port_scanner.scan(mac);
 });
 
 monitor.on('disconnected', function (mac) {
   console.log("Device disconnected: " + mac);
+});
+
+port_scanner.on('complete', function (mac) {
+  console.log("Port scan complete: " + mac);
+  device_identifier.attempt_identification(mac);
+});
+
+mdns_browser.on('updated', function (mac) {
+  console.log("mDNS services updated: " + mac);
+  device_identifier.attempt_identification(mac);
+});
+
+device_identifier.on('device_identified', function (mac) {
+  console.log("Device identified: " + mac);
 });
