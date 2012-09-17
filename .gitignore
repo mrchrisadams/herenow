@@ -1,2 +1,5 @@
 /dump.rdb
 /config/monitor.js
+/config/amon.js
+/.DS_Store
+/.vagrant
