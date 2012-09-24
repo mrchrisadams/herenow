@@ -80,9 +80,7 @@ exports.index = function(req, res){
 
 
 exports.device = function(req, res){
-
   db.hgetall(req.params['mac'], render);
-
   function render(err, device) {
     res.render('device', { 
       title: 'HereNow', 
@@ -90,7 +88,9 @@ exports.device = function(req, res){
       device: device
     })
   }
-  
+};
 
-
+exports.update_device = function(req, res){
+  db.hmset(req.params['mac'], req.body);
+  res.redirect('/');
 };
