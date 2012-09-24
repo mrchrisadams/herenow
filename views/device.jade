@@ -34,6 +34,14 @@
         .controls
           select(disabled=true)
       .control-group
+        label.control-label='Power (W)'
+        .controls
+          input(type='text', name='manual_power', value=device.manual_power)
+      .control-group
+        label.control-label='Storage (Wh)'
+        .controls
+          input(type='text', name='manual_storage', value=device.manual_storage)
+      .control-group
         .controls
           input(type='submit',value='Save')
       hr
