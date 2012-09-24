@@ -29,6 +29,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.get('/devices/:mac', routes.device);
 
 // Start web listener
 
