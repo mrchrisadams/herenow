@@ -1,3 +1,5 @@
+meta(http-equiv="refresh",content="15")
+
 .navbar.navbar-fixed-top
   .navbar-inner
     .container
@@ -35,7 +37,8 @@
         each device in ownerlessDevices
           li.span2
             div.thumbnail
-              img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
+              a(href='/devices/'+device.mac)
+                img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
               h3=device.name||device.model||device.mac
               p=device.type
               if device.power
@@ -46,7 +49,8 @@
         each device in disconnectedDevices
           li.span2
             div.thumbnail
-              img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
+              a(href='/devices/'+device.mac)
+                img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
               h4.away=device.name||device.model||device.mac
               p.away=device.user||''
               p=device.type

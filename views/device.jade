@@ -1,0 +1,48 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      .brand Herenow in #{location}
+
+.container
+  .row
+    h1='Editing Device'
+    form.form-horizontal(method='post',action='/devices/#{device.mac}')
+      .control-group
+        label.control-label='Name'
+        .controls
+          input(type='text', name='name', value=device.name)
+      .control-group
+        label.control-label='Model'
+        .controls
+          input(type='text', name='model', value=device.model)
+      .control-group
+        label.control-label='Type'
+        .controls
+          select(name='type')
+            option(value='',selected=(device.type==''))='Unknown'
+            option(value='phone',selected=(device.type=='phone'))='Phone'
+            option(value='tablet',selected=(device.type=='tablet'))='Tablet'
+            option(value='printer',selected=(device.type=='printer'))='Printer'
+            option(value='networking',selected=(device.type=='networking'))='Networking'
+            option(value='set_top_box',selected=(device.type=='set_top_box'))='Set Top Box'
+            option(value='computer',selected=(device.type=='computer'))='Computer'
+            option(value='laptop',selected=(device.type=='laptop'))='Laptop'
+            option(value='console',selected=(device.type=='console'))='Console'
+            option(value='misc',selected=(device.type=='misc'))='Misc'
+      .control-group
+        label.control-label='User'
+        .controls
+          select(disabled=true)
+      .control-group
+        .controls
+          input(type='submit',value='Save')
+      hr
+    .form-horizontal
+      .control-group
+        label.control-label='MAC Address'
+        .controls
+          input(type='text', readonly='readonly', value=device.mac)
+      .control-group
+        label.control-label='IP Address'
+        .controls
+          input(type='text', readonly='readonly', value=device.ip)
