@@ -30,7 +30,10 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/devices/:mac', routes.device);
-app.post('/devices/:mac', routes.update_device);
+app.post('/devices/:mac', function(req, res){
+  routes.update_device(req, res);
+  app.emit('device_updated', req.params['mac'])
+});
 
 // Start web listener
 
@@ -108,4 +111,8 @@ power_profiler.on('device_on', function(mac) {
 
 power_profiler.on('device_off', function(mac) {
   amon.device_off(mac);
+});
+
+app.on('device_updated', function (mac) {
+  console.log("Device updated: " + mac);
 });
