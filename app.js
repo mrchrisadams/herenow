@@ -101,17 +101,19 @@ mdns_browser.on('updated', function (mac) {
 device_identifier.on('device_identified', function (mac) {
   console.log("Device identified: " + mac);
   amon.update_device(mac);
-  power_profiler.device_off(mac);
   power_profiler.device_on(mac);
 });
 
 app.on('device_updated', function (mac) {
   amon.update_device(mac);
-  power_profiler.device_off(mac);
   power_profiler.device_on(mac);
 });
 
 power_profiler.on('device_on', function(mac) {
+  amon.device_on(mac);
+});
+
+power_profiler.on('device_updated', function(mac) {
   amon.device_on(mac);
 });
 
