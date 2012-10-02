@@ -80,7 +80,6 @@ monitor.on('reconnected', function (mac) {
   device_identifier.attempt_identification(mac);
   amon.update_device(mac);
   port_scanner.scan(mac);
-  power_profiler.device_on(mac);
 });
 
 monitor.on('disconnected', function (mac) {
@@ -91,6 +90,7 @@ monitor.on('disconnected', function (mac) {
 port_scanner.on('complete', function (mac) {
   console.log("Port scan complete: " + mac);
   device_identifier.attempt_identification(mac);
+  power_profiler.device_on(mac);
 });
 
 mdns_browser.on('updated', function (mac) {
