@@ -39,7 +39,7 @@ meta(http-equiv="refresh",content="15")
             div.thumbnail
               a(href='/devices/'+device.mac)
                 img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
-              h3=device.name||device.model||device.mac
+              h3=device.name||device.model||device.ip
               p=device.type
               if device.power
                 p=device.power + ' W / ' + (device.storage||'0') + ' Wh'
