@@ -120,3 +120,11 @@ power_profiler.on('device_updated', function(mac) {
 power_profiler.on('device_off', function(mac) {
   amon.device_off(mac);
 });
+
+power_profiler.on('usb_device_connected', function(mac, usb_id) {
+  console.log('usb device connected: ' + usb_id);
+});
+
+power_profiler.on('usb_device_disconnected', function(mac, usb_id) {
+  console.log('usb device disconnected: ' + usb_id);
+});
