@@ -44,21 +44,24 @@
       .control-group
         .controls
           input(type='submit',value='Save')
-      hr
-    .form-horizontal
-      .control-group
-        label.control-label='MAC Address'
-        .controls
-          input(type='text', readonly='readonly', value=device.mac)
-      .control-group
-        label.control-label='IP Address'
-        .controls
-          input(type='text', readonly='readonly', value=device.ip)
-      .control-group
-        label.control-label='AMON device'
-        .controls
-          =device.amon_device_uuid
-      .control-group
-        label.control-label='Services'
-        .controls
-          =device.services
+  .row
+    h2='Device data'
+    table.table
+      tr
+        td='MAC Address'
+        td=device.mac
+      tr
+        td='IP Address'
+        td=device.ip
+      tr
+        td='AMON device'
+        td=device.amon_device_uuid
+      tr
+        td='Services'
+        td=device.services
+      tr
+        td='Current power'
+        td=device.power + ' W'
+      tr
+        td='Current storage'
+        td=device.storage + ' Wh'
