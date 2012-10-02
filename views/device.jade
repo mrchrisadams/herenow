@@ -54,3 +54,11 @@
         label.control-label='IP Address'
         .controls
           input(type='text', readonly='readonly', value=device.ip)
+      .control-group
+        label.control-label='AMON device'
+        .controls
+          =device.amon_device_uuid
+      .control-group
+        label.control-label='Services'
+        .controls
+          =device.services
