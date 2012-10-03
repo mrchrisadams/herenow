@@ -55,7 +55,8 @@
         td=device.ip
       tr
         td='AMON device'
-        td=device.amon_device_uuid
+        td
+          a(href=amon.device_url(device)+'.json')=device.amon_device_uuid
       tr
         td='Services'
         td=device.services

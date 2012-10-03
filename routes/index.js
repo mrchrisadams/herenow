@@ -5,6 +5,7 @@
 
 var gravatar = require('gravatar')
 var db = require('../lib/db')
+var Amon = require ('../lib/amon');
 
 exports.index = function(req, res){
 
@@ -91,7 +92,8 @@ exports.device = function(req, res){
     res.render('device', { 
       title: 'HereNow', 
       location: "ShoreditchWorks",
-      device: device
+      device: device,
+      amon: new Amon()
     })
   }
 };
