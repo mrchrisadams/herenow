@@ -56,6 +56,10 @@ mdns_browser.start();
 var Amon = require('./lib/amon.js');
 var amon = new Amon();
 
+// Set up AMON/USB connection
+var AmonUSB = require('./lib/amon_usb.js');
+var amon_usb = new AmonUSB();
+
 // Wire monitor events to device identification
 
 var PortScanner = require('./lib/port_scanner.js');
@@ -123,8 +127,10 @@ power_profiler.on('device_off', function(mac) {
 
 power_profiler.on('usb_device_connected', function(mac, usb_id) {
   console.log('usb device connected: ' + usb_id);
+  amon_usb.device_on(mac, usb_id);
 });
 
 power_profiler.on('usb_device_disconnected', function(mac, usb_id) {
   console.log('usb device disconnected: ' + usb_id);
+  amon_usb.device_off(mac, usb_id);
 });
