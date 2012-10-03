@@ -114,14 +114,17 @@ app.on('device_updated', function (mac) {
 });
 
 power_profiler.on('device_on', function(mac) {
+  console.log('device powered on: ' + mac);
   amon.device_on(mac);
 });
 
 power_profiler.on('device_updated', function(mac) {
+  console.log('device power changed: ' + mac);
   amon.device_on(mac);
 });
 
 power_profiler.on('device_off', function(mac) {
+  console.log('device powered off: ' + mac);
   amon.device_off(mac);
 });
 
