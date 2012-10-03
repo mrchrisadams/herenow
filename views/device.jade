@@ -66,3 +66,17 @@
       tr
         td='Current storage'
         td=device.storage + ' Wh'
+
+  .row
+    h2='USB devices'
+    table.table
+      tr
+        th='Name'
+        th='Power'
+        th='AMON device'
+      - each device in usb_devices
+        tr
+          td=device.name
+          td=device.power + ' mW'
+          td
+            a(href=amon.device_url(device)+'.json')=device.amon_device_uuid

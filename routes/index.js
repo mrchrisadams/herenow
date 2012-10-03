@@ -87,12 +87,48 @@ exports.index = function(req, res){
 
 
 exports.device = function(req, res){
-  db.hgetall(req.params['mac'], render);
+  
+  var usb_device_ids =[];
+  var usb_devices =[];
+
+  // Load USB devices from redis
+  db.smembers('usb_'+req.params['mac'], load_usb_device_list);  
+  
+  function load_usb_device_list(err, devices) {
+    /* Store all MAC addresses */
+    if (devices == null)
+      usb_device_ids = []
+    else
+      usb_device_ids = devices    
+    /* Load individual device data */
+    get_next_usb_device();
+  }
+
+  function load_usb_device_data(err, data) {
+    /* Store device data */
+    if (data != null)
+      usb_devices.push(data)
+    /* Get more data */
+    get_next_usb_device();
+  }
+
+  function get_next_usb_device() {
+    // Pop next mac off list
+    id = usb_device_ids.pop();
+    // Get device data from redis if there is more to load
+    if (id != null)
+      db.hgetall(id, load_usb_device_data);
+    // If not, render the page
+    else
+      db.hgetall(req.params['mac'], render);
+  }
+  
   function render(err, device) {
     res.render('device', { 
       title: 'HereNow', 
       location: "ShoreditchWorks",
       device: device,
+      usb_devices: usb_devices,
       amon: new Amon()
     })
   }
