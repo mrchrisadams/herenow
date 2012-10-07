@@ -22,21 +22,25 @@ I'm guessing you're a developer if you're reading this, so I'm hoping I don't ha
 
 ### How to install
 
-HereNow uses node.js (sorry Sam), and `arp` and `nmap`, two commandline tools that exist on the *nix style operating systems.
+HereNow uses node.js (sorry Sam), and `arp` and `nmap`, two commandline tools that exist on the *nix style operating systems. You'll also need a redis server available.
 
 #### On a mac:
 
-You should alreadu have `arp` on any version of OS X up to Lion (I'm not sure about Mountain Lion yet)
-
-To get nmap, homebrew is your friend:
+Assuming you're using homebrew:
 
     brew install nmap
+    brew install redis
 
 #### On linux
 
-Assuming you're on Debian/Ubuntu if you're using Linux, `arp` you probably have too, but you may need to fetch `aptitude `:
+Assuming you're on Debian/Ubuntu:
 
-    sudo aptitude install nmap
+    sudo apt-get install build-essential
+    sudo apt-get install nmap
+    sudo apt-get install redis-server
+    sudo apt-get install libavahi-compat-libdnssd-dev (for mdns)
+    
+To get node.js, follow the instructions at https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager or install from source.
 
 From there, you should be able to just use npm from within the app, to fetch all the relevant modules for javascript:
 

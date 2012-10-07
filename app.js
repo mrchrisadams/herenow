@@ -29,6 +29,11 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.get('/devices/:mac', routes.device);
+app.post('/devices/:mac', function(req, res){
+  routes.update_device(req, res);
+  app.emit('device_updated', req.params['mac'])
+});
 
 // Start web listener
 
@@ -83,4 +88,8 @@ mdns_browser.on('updated', function (mac) {
 
 device_identifier.on('device_identified', function (mac) {
   console.log("Device identified: " + mac);
+});
+
+app.on('device_updated', function (mac) {
+  console.log("Device updated: " + mac);
 });
