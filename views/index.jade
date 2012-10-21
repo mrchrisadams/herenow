@@ -1,47 +1,51 @@
-meta(http-equiv="refresh",content="15")
+extends layout
 
-.navbar.navbar-fixed-top
-  .navbar-inner
-    .container
-      .brand Herenow in #{location}
+block content
 
-.container
-  .row
-    .hero-unit
+  meta(http-equiv="refresh",content="15")
+
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container
+        .brand Herenow in #{location}
+
+  .container
+    .row
+      .hero-unit
     
-      h3 Known people in this space
-      ul.thumbnails
-        each user in presentUsers
-          li.span2
-            div.thumbnail
-              img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username)
-              h3=user.username
-              ul.unstyled
-                each device in user.devices
-                  li=device.name||device.model||device.mac                
-        each user in awayUsers
-          li.span2
-            div.thumbnail
-              img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username,class='away')
-              h3.away=user.username
+        h3 Known people in this space
+        ul.thumbnails
+          each user in presentUsers
+            li.span2
+              div.thumbnail
+                img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username)
+                h3=user.username
+                ul.unstyled
+                  each device in user.devices
+                    li=device.name||device.model||device.mac                
+          each user in awayUsers
+            li.span2
+              div.thumbnail
+                img(src=gravatar.url(user.email, {s: '200', r: 'r', d: 'retro'}),alt=user.username,class='away')
+                h3.away=user.username
 
-      h3 Ownerless devices
-      ul.thumbnails
-        each device in ownerlessDevices
-          li.span2
-            div.thumbnail
-              a(href='/devices/'+device.mac)
-                img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
-              h3=device.name||device.model||device.mac
-              p=device.type
+        h3 Ownerless devices
+        ul.thumbnails
+          each device in ownerlessDevices
+            li.span2
+              div.thumbnail
+                a(href='/devices/'+device.mac)
+                  img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}))
+                h3=device.name||device.model||device.mac
+                p=device.type
 
-      h3 Disconnected devices
-      ul.thumbnails
-        each device in disconnectedDevices
-          li.span2
-            div.thumbnail
-              a(href='/devices/'+device.mac)
-                img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
-              h4.away=device.name||device.model||device.mac
-              p.away=device.user||''
-              p=device.type
+        h3 Disconnected devices
+        ul.thumbnails
+          each device in disconnectedDevices
+            li.span2
+              div.thumbnail
+                a(href='/devices/'+device.mac)
+                  img(src=gravatar.url(device.mac, {s: '100', r: 'r', d: 'retro'}),class='away')
+                h4.away=device.name||device.model||device.mac
+                p.away=device.user||''
+                p=device.type
