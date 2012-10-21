@@ -7,6 +7,8 @@ var gravatar = require('gravatar')
 var db = require('../lib/db')
 
 exports.index = function(req, res){
+  console.log("Express: request from:" + req.ip);
+
 
   // Device list
   mac_addresses = []
