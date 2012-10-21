@@ -61,35 +61,34 @@ var DeviceIdentifier = require('./lib/device_identifier.js');
 var device_identifier = new DeviceIdentifier();
 
 monitor.on('connected', function (mac) {
-  console.log("New device detected: " + mac);
+// console.log(this.prototype.toString())
+  // console.log(this.instanceOf + "New device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
 });
 
 monitor.on('reconnected', function (mac) {
-  console.log("Known device detected: " + mac);
+  console.log("Monitor: Known device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
 });
 
 monitor.on('disconnected', function (mac) {
-  console.log("Device disconnected: " + mac);
+  console.log("Monitor: Device disconnected: " + mac);
 });
 
 port_scanner.on('complete', function (mac) {
-  console.log("Port scan complete: " + mac);
+  
+  console.log("PortScanner: Port scan complete: " + mac);
   device_identifier.attempt_identification(mac);
 });
 
 mdns_browser.on('updated', function (mac) {
-  console.log("mDNS services updated: " + mac);
+  console.log("MDNSBrowser: mDNS services updated: " + mac);
   device_identifier.attempt_identification(mac);
 });
 
-device_identifier.on('device_identified', function (mac) {
-  console.log("Device identified: " + mac);
-});
 
 app.on('device_updated', function (mac) {
-  console.log("Device updated: " + mac);
+  console.log("DeviceIdentifier: Device updated: " + mac);
 });
