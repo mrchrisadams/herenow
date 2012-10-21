@@ -61,20 +61,27 @@ var port_scanner = new PortScanner();
 var DeviceIdentifier = require('./lib/device_identifier.js');
 var device_identifier = new DeviceIdentifier();
 
+var UserRegister = require('./lib/user_register.js');
+var user_register = new UserRegister();
+user_register.start();
+
 monitor.on('connected', function (mac) {
   console.log("Monitor: New device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
+  user_register.checkin(mac);
 });
 
 monitor.on('reconnected', function (mac) {
   console.log("Monitor: Known device detected: " + mac);
   device_identifier.attempt_identification(mac);
   port_scanner.scan(mac);
+  user_register.checkin(mac);
 });
 
 monitor.on('disconnected', function (mac) {
   console.log("Monitor: Device disconnected: " + mac);
+  user_register.checkout(mac);
 });
 
 port_scanner.on('complete', function (mac) {
