@@ -35,7 +35,7 @@ block content
         .control-group
           label.control-label='User'
           .controls
-            select(disabled=true)
+            input(type='text', name='owner', value=device.owner)
         .control-group
           .controls
             input(type='submit',value='Save')
