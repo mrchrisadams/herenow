@@ -50,8 +50,17 @@ exports.index = function(req, res){
 
     // Static list of users for now
     users = [ 
-      { email: "wave@chrisadams.me.uk", username: "mrchrisadams", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "mrchrisadams" && element['ip'] != null); }) }, 
-      { email: "james@floppy.org.uk", username: "floppy", devices: allDevices.filter(function hasOwner(element, i, a) {return (element['user'] == "floppy" && element['ip'] != null); })  }
+      { email: "wave@chrisadams.me.uk",
+      username: "mrchrisadams", 
+      devices: allDevices.filter(function hasOwner(element, i, a) {
+        return (element['owner'] == "mrchrisadams" && element['ip'] != null); }) 
+      }, 
+      { 
+        email: "james@floppy.org.uk", 
+        username: "floppy", 
+        devices: allDevices.filter(function hasOwner(element, i, a) {
+          return (element['owner'] == "floppy" && element['ip'] != null); })  
+      }
     ];
 
     res.render('index', { 
@@ -93,6 +102,7 @@ exports.device = function(req, res){
 };
 
 exports.update_device = function(req, res){
+  console.log(req.body);
   db.hmset(req.params['mac'], req.body);
   res.redirect('/');
 };
