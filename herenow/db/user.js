@@ -1,11 +1,12 @@
 // Example User attributes
-// {
-//   name: "Chris Adams"
-//   username: "mrchrisadams"
-//   devices: [00:1e:c2:a4:d3:5e]
-//   email_address: wave@chrisadams.me.uk
-//   gravatar: url at a given size
-// }
+// 
+//      {
+//        name: "Chris Adams"
+//        username: "mrchrisadams"
+//        devices: [00:1e:c2:a4:d3:5e]
+//        email_address: wave@chrisadams.me.uk
+//        gravatar: url at a given size
+//      }
 
 var sys = require('util'),
     fs = require('fs'),
@@ -32,6 +33,8 @@ User.prototype.toString = function() {
 
 User.prototype.findByDevice = function(device_mac, callback) {
 
+  // use waterfall to ensure the result of each function 
+  // is passed along to the next call
   async.waterfall([
     // fetch our device first
     function(callback){
@@ -46,9 +49,11 @@ User.prototype.findByDevice = function(device_mac, callback) {
       })
     }
     // return our user object
-    ], function (err, user) {
+  ], function (err, user) {
     callback(err, user)
   });
 
 }
+
+// export our user
 module.exports = User;
