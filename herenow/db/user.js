@@ -10,7 +10,8 @@
 var sys = require('util'),
     fs = require('fs'),
     events = require('events'),
-    db = require('../../lib/db');
+    db = require('../../lib/db'),
+    async = require('async')
 
 function User() {
   if(false === (this instanceof User)) {
@@ -31,20 +32,23 @@ User.prototype.toString = function() {
 
 User.prototype.findByDevice = function(device_mac, callback) {
 
-
-  db.hgetall(device_mac, function (err, device) {
-    if (err) { console.log(err) }
-    else {
-      if (device.hasOwnProperty('mac')) { 
-        db.hgetall(device.owner, function (err, user) {
-          if (err) { console.log(err)}
-          else{
-            callback(err , user)
-          }
-        });
-      }
+  async.waterfall([
+    // fetch our device first
+    function(callback){
+      db.hgetall(device_mac, function (err, res) {
+        callback(null, res);
+      })
+    },
+    // new we have our device, fetch the user
+    function(device, callback){
+      db.hgetall(device.owner, function (err, res) {
+        callback(err, res);
+      })
     }
+    // return our user object
+    ], function (err, user) {
+    callback(err, user)
   });
-}
 
+}
 module.exports = User;
