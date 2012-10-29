@@ -5,19 +5,59 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , herenow = require('./herenow/herenow');
-  
+  , herenow = require('./herenow/herenow')
+  , passport = require('passport')
+  , TwitterStrategy = require('passport-twitter').Strategy
+
+
 // Set up express server
 var app = express();
 app.configure(function(){
   app.use(express.static(__dirname + '/public'))
   app.set('view engine', 'jade');
-
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.logger());
   app.use(app.router);
 });
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+// Use the TwitterStrategy within Passport.
+//   Strategies in passport require a `verify` function, which accept
+//   credentials (in this case, a token, tokenSecret, and Twitter profile), and
+//   invoke a callback with a user object.
+passport.use(new TwitterStrategy({
+    consumerKey: app.settings.env.CONSUMER_KEY,
+    consumerSecret: app.settings.env.CONSUMER_SECRET  
+    callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+    console.log(profile);
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      
+      // To keep the example simple, the user's Twitter profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Twitter account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
+
+
+
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -35,6 +75,17 @@ app.post('/devices/:mac', function(req, res){
   routes.update_device(req, res);
   app.emit('device_updated', req.params['mac'])
 });
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback', 
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+
 
 // Start web listener
 

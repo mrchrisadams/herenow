@@ -15,5 +15,7 @@
     , "better-assert": ">=0.1.0"
     , "sinon": ">= 1.5.0"
     , "async": "0.1.22"
+    , "passport": "0.1.12"
+    , "passport-twitter": ">= 0.1.4"
   }
 }

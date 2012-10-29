@@ -8,14 +8,14 @@ var db = require('../lib/db')
 
 exports.index = function(req, res){
   console.log("Express: request from:" + req.ip);
-
-
   // Device list
   mac_addresses = []
   allDevices = []
   
   // Load mac addresses from redis
   db.smembers("all_devices", load_mac_addresses);  
+  
+  // db.smembers("all_users", load_users);
   
   function load_mac_addresses(err, devices) {
     /* Store all MAC addresses */
@@ -50,9 +50,10 @@ exports.index = function(req, res){
 
     // Static list of users for now
     users = [ 
-      { email: "wave@chrisadams.me.uk",
-      username: "mrchrisadams", 
-      devices: allDevices.filter(function hasOwner(element, i, a) {
+      { 
+        email: "wave@chrisadams.me.uk",
+        username: "mrchrisadams", 
+        devices: allDevices.filter(function hasOwner(element, i, a) {
         return (element['owner'] == "mrchrisadams" && element['ip'] != null); }) 
       }, 
       { 
@@ -89,7 +90,6 @@ exports.index = function(req, res){
 
 };
 
-
 exports.device = function(req, res){
   db.hgetall(req.params['mac'], render);
   function render(err, device) {
@@ -102,7 +102,6 @@ exports.device = function(req, res){
 };
 
 exports.update_device = function(req, res){
-  console.log(req.body);
   db.hmset(req.params['mac'], req.body);
   res.redirect('/');
 };
