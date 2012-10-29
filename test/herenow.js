@@ -1,1 +1,2 @@
-require('./herenow/users');
+require('./herenow/user');
+require('./herenow/device');
