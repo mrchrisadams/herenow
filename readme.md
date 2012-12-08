@@ -1,16 +1,13 @@
-_I'm about to reimplement this project in javascript, with node.js and express, partly to learn the framework better, and also to make it easier for a few friends to work with. As a result, so I'm pushing this to github now, to shame me into finishing it more quickly._
-
-_do please bear with me while I well… make it work, but hopefully the readme below gives an idea of what I'm trying to build here_
 
 ## HereNow - a passive location based way to put an API on a building
 
 HereNow is a utility to add an API onto physical spaces by making educated guesses about who's in physical environment, based on whether laptops, iPads or smart phones they own are detected on networks serving the space at given moment. 
 
-##### Right now, the assumption here is that a space only has one wifi point, and here now only serves one network.
+Right now, the assumption here is that a space only has one wifi point, and here now only serves one network.
 
 ### Why would I care?
 
-In short, HereNow lets you do two things, which I don't see an easy way to do currently, without relying on every device having GPS tracking, and phone home to google/apple/$tech_giant each time.
+In short, HereNow lets you do two things, which I don't see an easy way to do currently, without relying on every device having GPS tracking, and phone home to `google/apple/$tech_giant` each time.
 
 It lets you:
 
@@ -22,14 +19,16 @@ I'm guessing you're a developer if you're reading this, so I'm hoping I don't ha
 
 ### How to install
 
-HereNow uses node.js (sorry Sam), and `arp` and `nmap`, two commandline tools that exist on the *nix style operating systems. You'll also need a redis server available.
+HereNow uses `node.js`, and `arp` and `nmap`, two commandline tools that exist on the *nix style operating systems. You'll also need a redis server available.
 
 #### On a mac:
 
 Assuming you're using homebrew:
 
-    brew install nmap
-    brew install redis
+```shell
+brew install nmap
+brew install redis
+```
 
 #### On linux
 
@@ -95,14 +94,16 @@ You can think of anything with a network signature as being a device - an iPad, 
 
 You might think of the json representing them like so:
 
-    { 
-      mac:
-      ip:
-      first_appeared:
-      owner:
-      guid:
-      status:
-    }
+```js
+{ 
+  mac:
+  ip:
+  first_appeared:
+  owner:
+  guid:
+  status:
+}
+```
 
 #### Owners
 
